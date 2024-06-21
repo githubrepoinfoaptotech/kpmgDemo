@@ -878,7 +878,7 @@ exports.getAllCandidateStatus = async (req, res) => {
 exports.viewAllCanditates = async (req, res) => {
   try {
     var page = req.body.page;
-    var limit = 50;
+    var limit = 10;
     var mywhere = { mainId: req.mainId };
     reqWhere={};
     if (req.body.fromDate && req.body.toDate) {
@@ -1297,7 +1297,7 @@ exports.viewCandidate = async (req, res) => {
 exports.myCandidates = async (req, res) => {
   try {
     var page = req.body.page;
-    var limit = 50;
+    var limit = 10;
     mywhere = { mainId: req.mainId, recruiterId: req.recruiterId };
 
     if (req.body.fromDate && req.body.toDate) {
@@ -1816,7 +1816,7 @@ exports.invoicedCandidates = async (req, res) => {
         res.status(200).json({ status: true, data: xldata });
       });
   } else {
-    var limit = 50;
+    var limit = 10;
     var page = req.body.page;
     var user_dat = await user.findOne({ where: { id: req.userId } });
 
@@ -2046,7 +2046,7 @@ exports.getMonthlyData = async (req, res) => {
 // https://prod.liveshare.vsengsaas.visualstudio.com/join?429BFE7419613878E48E87B9DC3F07A70EC0
 
 exports.candidateReports = async (req, res) => {
-  var limit = 50;
+  var limit = 10;
   var page = req.body.page;
   var dateObj = new Date();
   var month = dateObj.getUTCMonth() + 1; //months from 1-12
@@ -2444,7 +2444,7 @@ exports.getAllDropedCandidate = async (req, res) => {
       res.status(200).json({ data: xdata, status: true });
     } else {
       var page = req.body.page;
-      var limit = 50;
+      var limit = 10;
       var mywhere = { mainId: req.mainId, statusCode: 302 };
 
       if (req.body.fromDate && req.body.toDate) {
@@ -2907,7 +2907,7 @@ exports.getAllReportCount = async (req, res) => {
 
 exports.singleCandidateSearch = async (req, res) => {
   var page = req.body.page;
-  var limit = 50;
+  var limit = 10;
   myWhere = { mainId: req.mainId };
   if (req.body.skills && req.body.skills != "") {
     myWhere[Op.and] = [];
@@ -2987,7 +2987,7 @@ exports.singleCandidateSearch = async (req, res) => {
 
 exports.singleMyCandidateSearch = async (req, res) => {
   var page = req.body.page;
-  var limit = 50;
+  var limit = 10;
   var myWhere = { mainId: req.mainId, recruiterId: req.recruiterId };
   if (req.body.skills && req.body.skills != "") {
     myWhere[Op.and] = [];
@@ -3067,7 +3067,7 @@ exports.singleMyCandidateSearch = async (req, res) => {
 
 exports.candidateActivity = async (req, res) => {
   const { page } = req.body;
-  const limit = 50;
+  const limit = 10;
   var myWhere = { mainId: req.mainId };
   if (req.body.fromDate && req.body.toDate) {
     const fromDate = moment(req.body.fromDate).startOf("day").toISOString();
