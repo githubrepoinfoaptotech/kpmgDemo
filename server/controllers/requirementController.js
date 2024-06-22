@@ -330,7 +330,7 @@ exports.viewRequirement = async (req, res) => {
       {
         model:assignedRequirements,
         attributes:["recruiterId","id"],
-        include:[{model:recruiter,attributes:["firstName","lastName","email"]}]
+        include:[{model:recruiter,attributes:["firstName","lastName"]}]
       }
     ],attributes:[
       'requirementName',
