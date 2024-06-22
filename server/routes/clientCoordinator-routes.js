@@ -7,7 +7,7 @@ const check_auth=require('../middlewares/check_auth');
 const check_auth_mail=require('../middlewares/check_auth_mail');
 const dashboardController=require('../controllers/dashboardController');
 const validation=require("../middlewares/validation");
-const filefunctions=require("../middlewares/fileUploadMulter");
+const filefunctions=require("../middlewares/azureFileUploadMulter");
 const candidateNotes=require('../controllers/candidateNotesController');
 const route=Router();
 

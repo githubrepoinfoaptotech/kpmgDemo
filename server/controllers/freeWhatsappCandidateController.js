@@ -674,7 +674,7 @@ exports.addFreeCandidate = async (req, res) => {
 exports.uploadScreenShot=async(req,res)=>{
   freeCandidateMessageActivity.findOne({where:{id:req.body.id}}).then(async data=>{
     await data.update({
-      screenShot: "screenShots" + "/" + req.file.key,
+      screenShot: "screenShots" + "/" + req.file.blobName,
     });
     res.status(200).json({ message:"done" , status: true });
   })

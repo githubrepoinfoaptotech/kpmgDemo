@@ -7,7 +7,7 @@ const recruiterTransactionController=require("../controllers/recruiterTransactio
 const freeWhatsappCandidateController=require("../controllers/freeWhatsappCandidateController");
 const supportTicketController=require("../controllers/supportTicketController");
 const pricingController=require("../controllers/pricingController");
-const backupController=require("../controllers/backupController");
+//const backupController=require("../controllers/backupController");
 const express = require('express');
 const route = express.Router();
 require("dotenv").config();
@@ -15,7 +15,7 @@ const check_auth_admin=require('../middlewares/check_auth_admin');
 const check_auth_CC=require('../middlewares/check_auth_clientCoordinater');
 const validation=require("../middlewares/validation");
 const { adminDashboard,adminDashboardCopy } = require('../controllers/dashboardController');
-const fileUploader=require("../middlewares/fileUploadMulter");
+const fileUploader=require("../middlewares/azureFileUploadMulter");
 const message=require("../functions/messageValidation");
 
 //-------------------------------------
@@ -75,7 +75,7 @@ route.post('/adminEditCandidate',check_auth_admin,candidateController.adminEditC
 route.post('/singleCandidateSearch',check_auth_admin,candidateController.singleCandidateSearch);
 route.post("/candidateActivity",check_auth_admin,candidateController.candidateActivity);
 //--settings
-route.post('/setLogo',check_auth_admin,fileUploader.ImageUpload,userController.setLogo);
+route.post('/setLogo',check_auth_admin,fileUploader.imageUpload,userController.setLogo);
 // ---recruiter TRansaction
 route.post("/viewMyPurchase",check_auth_admin,recruiterTransactionController.viewMyPurchases);
 route.post("/MyMessageActivity",check_auth_admin,recruiterTransactionController.MyMessageActivity);
@@ -122,13 +122,13 @@ route.post("/pricingList",check_auth_admin,pricingController.pricingList);
 route.post("/addFreeCredits",check_auth_admin,recruiterTransactionController.addFreeCredits);
 
 //Backup
-route.post("/backupData",check_auth_admin,backupController.backupData);
-route.post("/inactiveBackup",check_auth_admin,backupController.inactiveBackup);
-//route.all("/inactiveBackupFile",check_auth_admin,backupController.inactiveBackupFile);
-route.post("/archiveDownload",check_auth_admin,backupController.archiveDownload);
-route.post("/resumeBackup",check_auth_admin,backupController.resumeBackup);
-route.post("/clientRestoreBackup",check_auth_admin,fileUploader.backupFile,backupController.clientRestoreBackup);
-route.post("/clientrestoreDataBase",check_auth_admin,backupController.clientrestoreDataBase);
+// route.post("/backupData",check_auth_admin,backupController.backupData);
+// route.post("/inactiveBackup",check_auth_admin,backupController.inactiveBackup);
+// //route.all("/inactiveBackupFile",check_auth_admin,backupController.inactiveBackupFile);
+// route.post("/archiveDownload",check_auth_admin,backupController.archiveDownload);
+// route.post("/resumeBackup",check_auth_admin,backupController.resumeBackup);
+// //route.post("/clientRestoreBackup",check_auth_admin,fileUploader.backupFile,backupController.clientRestoreBackup);
+// route.post("/clientrestoreDataBase",check_auth_admin,backupController.clientrestoreDataBase);
 
 //external User
 route.post("/assignRequirements",check_auth_CC,requirementController.assignRequirements);
@@ -136,7 +136,7 @@ route.post("/viewAllAssigendRequirements",check_auth_admin,requirementController
 
 route.post("/changeAssignedRequirementStatus",check_auth_admin,requirementController.changeAssignedRequirementStatus);
 //existing Candidates
-route.post("/uploadExistingCandidates",check_auth_admin,fileUploader.existingCandidateUpload,candidateController.uploadExistingCandidates)
+//route.post("/uploadExistingCandidates",check_auth_admin,fileUploader.existingCandidateUpload,candidateController.uploadExistingCandidates)
 route.post("/sendCV",check_auth_admin,candidateController.sendCV);
 
 route.post("/msmeSearchCompany",check_auth_admin,authController.msmeSearchCompany);

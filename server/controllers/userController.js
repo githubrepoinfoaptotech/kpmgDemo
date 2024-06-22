@@ -10,41 +10,11 @@ const { Op } = require("sequelize");
 const { read } = require("fs");
 const multer=require('multer');
 var path=require('path');
-const AWS = require("aws-sdk");
 const multerS3 = require('multer-s3')
 const Source = require("../models/source");
 const role = require("../models/role");
 var maxSize = 2 * 1024 * 1024; // 10MB;
-const s3 = new AWS.S3({
-    accessKeyId: process.env.s3_id,
-    secretAccessKey: process.env.s3_key,
-  });
-const Imageupload = multer({
-  limits: {
-    fileSize: maxSize,
-  },
-  fileFilter: (req, file, cb) => {
-    // Check if the file size is too large
-    if (file.size > maxSize) {
-      return cb(new Error('Invalid file type'));
-    }
-    else{
-      return cb(null, true);
-    }  
-  },
-  storage: multerS3({
-    s3: s3,
-    bucket: "liverefo"+"/"+"profilePicture",
-    key: function (req, file, cb) {
-      var ext = path.extname(file.originalname);
-      console.log(ext);
-      if(ext == '.jpg' || ext == '.png' || ext == '.jpeg') {
-        cb(null, req.mainId+"/"+req.mainId+"_"+file.originalname);
-      }
-      
-    }
-  })
-});
+
 // superadmin control ---------------------------------------------------------------------------------------------------
 exports.addAdmin = async (req, res) => {
   try {
@@ -582,6 +552,7 @@ exports.addUser = async (req, res) => {
         isMsme:false,
         isActive:true
       });
+      
       rec_data={
         userId: user_data.id,
         firstName: firstName,
@@ -596,7 +567,7 @@ exports.addUser = async (req, res) => {
         capabilities:capabilities,
         recruiterCapacity:recruiterCapacity
       };
-      recruiter.create();
+      await recruiter.create();
       res
         .status(200)
         .json({ status: true, message: "User Added Successfully" });
@@ -783,9 +754,9 @@ exports.setLogo = async (req, res) => {
   recruitersSettings.findOne({ where: { mainId: req.mainId } }).then(data => {
     if (data) {
       data.update({
-        image: 'profilePicture'+"/"+req.file.key
+        image: 'profilePicture'+"/"+req.file.blobName
       });
-      res.status(200).json({ status: true, message: "Image Updated Successfully", image: process.env.liveUrl+'profilePicture'+"/"+req.file.key});
+      res.status(200).json({ status: true, message: "Image Updated Successfully", image: process.env.liveUrl+'profilePicture'+"/"+req.file.blobName});
     }
     else {
       res.status(200).json({ status: false, message: "User Not Found" });

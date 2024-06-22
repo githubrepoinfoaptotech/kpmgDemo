@@ -13,17 +13,17 @@ const Sequelize= require("sequelize");
 //     } catch (error) {
 //     console.error('Unable to connect to the database:', error);
 //     }
-    const sequelize=new Sequelize("refo_production","refo_production","AHXjRk!hbs6m9RAHXjRk!hbs6m9R$789",{
-        dialect:"postgres",
-        host:"refo-production-v1.ckzrrpsjwx6b.us-east-1.rds.amazonaws.com",
-        logging:false,
-    });
-    try {
-        sequelize.authenticate();
-        console.log('Connection has been established successfully.');
-        } catch (error) {
-        console.error('Unable to connect to the database:', error);
-        }
+    // const sequelize=new Sequelize("refo_production","refo_production","AHXjRk!hbs6m9RAHXjRk!hbs6m9R$789",{
+    //     dialect:"postgres",
+    //     host:"refo-production-v1.ckzrrpsjwx6b.us-east-1.rds.amazonaws.com",
+    //     logging:false,
+    // });
+    // try {
+    //     sequelize.authenticate();
+    //     console.log('Connection has been established successfully.');
+    //     } catch (error) {
+    //     console.error('Unable to connect to the database:', error);
+    //     }
       /*
         const sequelize=new Sequelize("refo_production","postgres","123456789",{
         dialect:"postgres",
@@ -37,6 +37,25 @@ const Sequelize= require("sequelize");
         console.error('Unable to connect to the database:', error);
         }
 */
+const sequelize = new Sequelize("kpmg_refo", "citus", "kpmg@infoaptotech019", {
+    dialect: "postgres",
+    host: "c-kpmgdb.nxdf6432pofdnp.postgres.cosmos.azure.com",
+    port: 5432, // Add the port if it's not the default one
+    logging: false,
+    dialectOptions: {
+        ssl: {
+            require: true,
+            rejectUnauthorized: false // This can be adjusted based on your security requirements
+        }
+    }
+});
+
+try {
+    sequelize.authenticate();
+    console.log('Connection has been established successfully.');
+} catch (error) {
+    console.error('Unable to connect to the database:', error);
+}
 module.exports=sequelize;
 
 

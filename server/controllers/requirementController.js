@@ -766,7 +766,7 @@ exports.updateRequirementJd= async (req, res) => {
       console.log(data);
       if (req.file) {
         await data.update({
-          requirementJd: "requirement" + "/" + req.file.key,
+          requirementJd: "requirement" + "/" + req.file.blobName,
         });
         res.status(200).json({ status: true, message: "Requirement Jd Added" });
       } else {

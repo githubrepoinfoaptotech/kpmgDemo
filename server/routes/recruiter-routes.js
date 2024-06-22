@@ -3,7 +3,7 @@ const candidateController=require('../controllers/candidateController');
 const userController=require('../controllers/userController');
 const requirementController=require("../controllers/requirementController");
 const dashboardController=require('../controllers/dashboardController');
-const chatController=require('../controllers/chatController');
+//const chatController=require('../controllers/chatController');
 const candidateNotes=require('../controllers/candidateNotesController');
 const candidateYes=require('../controllers/freeWhatsappCandidateController');
 const candidateMail=require("../controllers/candidateSendMailController");
@@ -12,9 +12,9 @@ const express = require('express');
 const route = express.Router();
 const message=require("../functions/messageValidation"); 
 const check_auth=require('../middlewares/check_auth');
-const fileUploader=require("../middlewares/fileUploadMulter");      
+const fileUploader=require("../middlewares/azureFileUploadMulter");      
 const extracttext=require("../middlewares/extractText");     
-const AWS = require("aws-sdk");
+//const AWS = require("aws-sdk");
 require("dotenv").config(); 
 
 
@@ -77,6 +77,6 @@ route.post('/sendCPVLink',check_auth,candidateController.sendCPVLink);
 route.post('/candidateCpvForm',candidateController.candidateCpvForm);
 route.post('/viewCpv',candidateController.viewCpv);
 route.post('/candiateCpvLink',check_auth,candidateController.candiateCpvLink);
-route.post('/updateCandidateMindSetAssessment',check_auth,fileUploader.candidateMindsetAssessmentUpload,candidateController.updateCandidateMindSetAssessment);
+//route.post('/updateCandidateMindSetAssessment',check_auth,fileUploader.candidateMindsetAssessmentUpload,candidateController.updateCandidateMindSetAssessment);
 route.post('/extractInfo',check_auth,extracttext.textExtract);
 module.exports=route; 

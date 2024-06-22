@@ -108,7 +108,7 @@ exports.updateCandidateResume = async (req, res) => {
     .then(async (data) => {
       if (req.file) {
         await data.update({
-          resume: "resumes" + "/" + req.file.key,
+          resume: "resumes" + "/" + req.file.blobName,
         });
        res.status(200).json({ status: true, message: "Resume Added" });  
       } else {
@@ -126,7 +126,7 @@ exports.updateCandidateDocument=async(req,res)=>{
   .then(async (data) => {
     if (req.file) {
       await data.update({
-        document: "documents" + "/" + req.file.key,
+        document: "documents" + "/" + req.file.blobName,
       });
      res.status(200).json({ status: true, message: "Resume Added" });  
     } else {
@@ -144,7 +144,7 @@ exports.updateCandidatePhoto=async(req,res)=>{
   .then(async (data) => {
     if (req.file) {
       await data.update({
-        photo: "photos" + "/" + req.file.key,
+        photo: "photos" + "/" + req.file.blobName,
       });
      res.status(200).json({ status: true, message: "Resume Added" });  
     } else {
@@ -3435,7 +3435,7 @@ exports.updateCandidateMindSetAssessment=async(req,res)=>{
     .then(async (data) => {
       if (req.file) {
         await data.update({
-          candidateMindsetAssessmentLink: "candidateAssessment" + "/" + req.file.key,
+          candidateMindsetAssessmentLink: "candidateAssessment" + "/" + req.file.blobName,
         });
         res.status(200).json({ status: true, message: "Candidate Mindset Assessment Added" });
       } else {

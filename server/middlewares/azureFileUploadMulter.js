@@ -1,105 +1,278 @@
-const multer = require('multer');
-const { BlobServiceClient, StorageSharedKeyCredential } = require('@azure/storage-blob');
-const path = require('path');
-const fs = require('fs');
+const multer = require('multer')
+const MulterAzureStorage = require('multer-azure-blob-storage').MulterAzureStorage;
+const path =require('path');
 
-// Azure Blob Storage configuration
-const accountName = process.env.AZURE_STORAGE_ACCOUNT_NAME;
-const accountKey = process.env.AZURE_STORAGE_ACCOUNT_KEY;
-const containerName = process.env.AZURE_STORAGE_CONTAINER_NAME;
+const connectionString=process.env.connectionString
+const accessKey=process.env.accessKey
+const accountName=process.env.accountName
 
-const sharedKeyCredential = new StorageSharedKeyCredential(accountName, accountKey);
-const blobServiceClient = new BlobServiceClient(
-    `https://${accountName}.blob.core.windows.net`,
-    sharedKeyCredential
-);
-const containerClient = blobServiceClient.getContainerClient(containerName);
+const resolveBlobName = (req, file) => {
+    return req.mainId+"/"+"refo_"+req.mainId+"_"+Date.now()+path.extname(file.originalname).toLowerCase();
+};
 
-// Multer setup for file uploads
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/');
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + '-' + file.originalname);
+const resolveMetadata = (req, file) => {
+    return {
+        contentType: file.mimetype,
+        author: 'kpmg',
+        // Add more metadata properties as needed
+    };
+};
+
+const resolveContentSettings = (req, file) => {
+    return {
+        contentType: file.mimetype
+        // Add more content settings properties as needed
+    };
+};
+
+
+
+const maxSize = 10 * 1024 * 1024; // 10MB
+
+exports.resumeUpload = async function(req, res, next) {
+    try {
+        const ResumeAzureStorage = new MulterAzureStorage({
+            connectionString: connectionString,
+            accessKey: accessKey,
+            accountName: accountName,
+            containerName: 'resumes',
+            blobName: resolveBlobName,
+            metadata: resolveMetadata,
+            contentSettings: resolveContentSettings,
+            containerAccessLevel: 'blob'
+            
+        });
+        const upload = multer({
+            limits: { fileSize: maxSize },
+            storage: ResumeAzureStorage,
+            fileFilter: function (req, file, cb) {
+                const allowedExtensions = ['.pdf', '.docx', '.doc'];
+                const ext = path.extname(file.originalname).toLowerCase();
+                if (allowedExtensions.includes(ext)) {
+                    cb(null, true);
+                } else {
+                    cb(new Error('Only PDF, DOCX, and DOC files are allowed'));
+                }
+            }
+        }).single('resume', 1);
+
+        upload(req, res, (err) => {
+            if (err) {
+                console.error(err);
+                res.status(200).json({ status: false, message: 'Unable to upload resume, check the resume size and type' });
+            } else {
+                next();
+            }
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ status: false, message: 'Internal server error' });
     }
-});
-const upload = multer({ storage: storage });
-
-// Function to upload file to Azure Blob Storage
-const uploadFile = async (filePath, folder, blobName) => {
-    const blockBlobClient = containerClient.getBlockBlobClient(`${folder}/${blobName}`);
-    await blockBlobClient.uploadFile(filePath);
-    console.log(`Upload of ${blobName} to ${folder} complete`);
 };
 
-// List files in Azure Blob Storage
-const listFiles = async (folder) => {
-    let blobs = [];
-    for await (const blob of containerClient.listBlobsFlat({ prefix: folder })) {
-        blobs.push(blob.name);
+
+exports.imageUpload = async function(req, res, next) {
+    try {
+        const ImageAzureStorage = new MulterAzureStorage({
+            connectionString: connectionString,
+            accessKey: accessKey,
+            accountName: accountName,
+            containerName: 'images',
+            blobName: resolveBlobName,
+            metadata: resolveMetadata,
+            contentSettings: resolveContentSettings,
+            containerAccessLevel: 'blob'
+            
+        });
+        const upload = multer({
+            limits: { fileSize: maxSize },
+            storage: ImageAzureStorage,
+            fileFilter: function (req, file, cb) {
+                const allowedExtensions = ['.png', '.jpg', '.jpeg'];
+                const ext = path.extname(file.originalname).toLowerCase();
+                if (allowedExtensions.includes(ext)) {
+                    cb(null, true);
+                } else {
+                    cb(new Error('Only PNG, JPG, and JPEG files are allowed'));
+                }
+            }
+        }).single('image', 1);
+
+        upload(req, res, (err) => {
+            if (err) {
+                console.error(err);
+                res.status(200).json({ status: false, message: 'Unable to upload image, check the resume size and type' });
+            } else {
+                next();
+            }
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ status: false, message: 'Internal server error' });
     }
-    return blobs;
 };
 
-// Download file from Azure Blob Storage
-const downloadFile = async (folder, blobName, downloadFilePath) => {
-    const blockBlobClient = containerClient.getBlockBlobClient(`${folder}/${blobName}`);
-    await blockBlobClient.downloadToFile(downloadFilePath);
-    console.log(`Download of ${blobName} from ${folder} complete`);
+exports.photoUpload = async function(req, res, next) {
+    try {
+        const PhotoAzureStorage = new MulterAzureStorage({
+            connectionString: connectionString,
+            accessKey: accessKey,
+            accountName: accountName,
+            containerName: 'photos',
+            blobName: resolveBlobName,
+            metadata: resolveMetadata,
+            contentSettings: resolveContentSettings,
+            containerAccessLevel: 'blob'
+            
+        });
+        const upload = multer({
+            limits: { fileSize: maxSize },
+            storage: PhotoAzureStorage,
+            fileFilter: function (req, file, cb) {
+                const allowedExtensions = ['.png', '.jpg', '.jpeg'];
+                const ext = path.extname(file.originalname).toLowerCase();
+                if (allowedExtensions.includes(ext)) {
+                    cb(null, true);
+                } else {
+                    cb(new Error('Only PNG, JPG, and JPEG files are allowed'));
+                }
+            }
+        }).single('image', 1);
+
+        upload(req, res, (err) => {
+            if (err) {
+                console.error(err);
+                res.status(200).json({ status: false, message: 'Unable to upload image, check the resume size and type' });
+            } else {
+                next();
+            }
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ status: false, message: 'Internal server error' });
+    }
 };
 
-// Delete file from Azure Blob Storage
-const deleteFile = async (folder, blobName) => {
-    const blockBlobClient = containerClient.getBlockBlobClient(`${folder}/${blobName}`);
-    await blockBlobClient.delete();
-    console.log(`Deletion of ${blobName} from ${folder} complete`);
+exports.documentUpload = async function(req, res, next) {
+    try {
+        const DocumentsAzureStorage = new MulterAzureStorage({
+            connectionString: connectionString,
+            accessKey: accessKey,
+            accountName: accountName,
+            containerName: 'documents',
+            blobName: resolveBlobName,
+            metadata: resolveMetadata,
+            contentSettings: resolveContentSettings,
+            containerAccessLevel: 'blob'
+            
+        });
+        const upload = multer({
+            limits: { fileSize: maxSize },
+            storage: DocumentsAzureStorage,
+            fileFilter: function (req, file, cb) {
+                const allowedExtensions = ['.pdf', '.doc', '.docx'];
+                const ext = path.extname(file.originalname).toLowerCase();
+                if (allowedExtensions.includes(ext)) {
+                    cb(null, true);
+                } else {
+                    cb(new Error('Only PNG, JPG, and JPEG files are allowed'));
+                }
+            }
+        }).single('document', 1);
+
+        upload(req, res, (err) => {
+            if (err) {
+                console.error(err);
+                res.status(200).json({ status: false, message: 'Unable to upload image, check the resume size and type' });
+            } else {
+                next();
+            }
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ status: false, message: 'Internal server error' });
+    }
 };
 
-// Express routes for file operations
-const express = require('express');
-const router = express.Router();
 
-// Route to upload resumes
-router.post('/upload/resume', upload.single('file'), async (req, res) => {
-    const filePath = path.join(__dirname, 'uploads', req.file.filename);
-    const folder = 'resumes';
-    const blobName = req.file.filename;
-    await uploadFile(filePath, folder, blobName);
-    res.send('Resume uploaded to Azure Blob Storage');
-});
+exports.jdUpload = async function(req, res, next) {
+    try {
+        const RequirementStorage = new MulterAzureStorage({
+            connectionString: connectionString,
+            accessKey: accessKey,
+            accountName: accountName,
+            containerName: 'requirements',
+            blobName: resolveBlobName,
+            metadata: resolveMetadata,
+            contentSettings: resolveContentSettings,
+            containerAccessLevel: 'blob'
+            
+        });
+        const upload = multer({
+            limits: { fileSize: maxSize },
+            storage: RequirementStorage,
+            fileFilter: function (req, file, cb) {
+                const allowedExtensions = ['.pdf', '.doc', '.docx'];
+                const ext = path.extname(file.originalname).toLowerCase();
+                if (allowedExtensions.includes(ext)) {
+                    cb(null, true);
+                } else {
+                    cb(new Error('Only PNG, JPG, and JPEG files are allowed'));
+                }
+            }
+        }).single('file', 1);
 
-// Route to upload images
-router.post('/upload/image', upload.single('file'), async (req, res) => {
-    const filePath = path.join(__dirname, 'uploads', req.file.filename);
-    const folder = 'images';
-    const blobName = req.file.filename;
-    await uploadFile(filePath, folder, blobName);
-    res.send('Image uploaded to Azure Blob Storage');
-});
+        upload(req, res, (err) => {
+            if (err) {
+                console.error(err);
+                res.status(200).json({ status: false, message: 'Unable to upload image, check the resume size and type' });
+            } else {
+                next();
+            }
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ status: false, message: 'Internal server error' });
+    }
+};
 
-// Route to list files in a folder
-router.get('/files/:folder', async (req, res) => {
-    const folder = req.params.folder;
-    const files = await listFiles(folder);
-    res.send(files);
-});
+exports.screenShotUploader=async(req,res,next)=>{
+    try {
+        const screenShotsStorage = new MulterAzureStorage({
+            connectionString: connectionString,
+            accessKey: accessKey,
+            accountName: accountName,
+            containerName: 'screenShots',
+            blobName: resolveBlobName,
+            metadata: resolveMetadata,
+            contentSettings: resolveContentSettings,
+            containerAccessLevel: 'blob'
+            
+        });
+        const upload = multer({
+            limits: { fileSize: maxSize },
+            storage: screenShotsStorage,
+            fileFilter: function (req, file, cb) {
+                const allowedExtensions = ['.png', '.jpg', '.jpeg'];
+                const ext = path.extname(file.originalname).toLowerCase();
+                if (allowedExtensions.includes(ext)) {
+                    cb(null, true);
+                } else {
+                    cb(new Error('Only PNG, JPG, and JPEG files are allowed'));
+                }
+            }
+        }).single('image', 1);
 
-// Route to download a file from a specific folder
-router.get('/download/:folder/:filename', async (req, res) => {
-    const folder = req.params.folder;
-    const blobName = req.params.filename;
-    const downloadFilePath = path.join(__dirname, 'downloads', blobName);
-    await downloadFile(folder, blobName, downloadFilePath);
-    res.download(downloadFilePath);
-});
-
-// Route to delete a file from a specific folder
-router.delete('/delete/:folder/:filename', async (req, res) => {
-    const folder = req.params.folder;
-    const blobName = req.params.filename;
-    await deleteFile(folder, blobName);
-    res.send(`File deleted from Azure Blob Storage in folder ${folder}`);
-});
-
-module.exports = router;
+        upload(req, res, (err) => {
+            if (err) {
+                console.error(err);
+                res.status(200).json({ status: false, message: 'Unable to upload image, check the resume size and type' });
+            } else {
+                next();
+            }
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ status: false, message: 'Internal server error' });
+    }
+  };

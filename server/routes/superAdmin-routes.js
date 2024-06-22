@@ -4,13 +4,13 @@ const dashboardController=require('../controllers/dashboardController');
 const authController=require("../controllers/authController");
 const recruiterTransactionController=require("../controllers/recruiterTransactionControllers");
 const supportTicketController=require("../controllers/supportTicketController");
-const chatController=require("../controllers/chatController");
+//const chatController=require("../controllers/chatController");
 const express = require('express');
 const route = express.Router();
 const validation=require("../middlewares/validation");
 const check_auth_superadmin=require('../middlewares/check_auth_superadmin');
-const backupController=require("../controllers/backupController");
-var fileFunctions=require("../middlewares/fileUploadMulter");
+//const backupController=require("../controllers/backupController");
+var fileFunctions=require("../middlewares/azureFileUploadMulter");
 const multer=require('multer');
 var path=require('path');
 
@@ -57,7 +57,7 @@ route.post('/editPurchase',check_auth_superadmin,recruiterTransactionController.
 route.post('/purchaseHistory',check_auth_superadmin,recruiterTransactionController.purchaseHistory);
 route.post('/singlePurchase',check_auth_superadmin,recruiterTransactionController.singlePurchase);
 route.post('/getWallet',check_auth_superadmin,authController.getWallet);
-route.post('/viewAllChats',check_auth_superadmin,chatController.viewAllChats);
+//route.post('/viewAllChats',check_auth_superadmin,chatController.viewAllChats);
 route.post('/purchaseInvoice',check_auth_superadmin,recruiterTransactionController.purchaseInvoice);
 route.post('/changePendingPaymentStatus',check_auth_superadmin,recruiterTransactionController.changePendingPaymentStatus);
 
@@ -67,9 +67,9 @@ route.post('/ViewAllSupportConversation',check_auth_superadmin,supportTicketCont
 route.post('/superAdminSupportConversation',check_auth_superadmin,supportTicketController.superAdminSupportConversation);
 
 
-route.post('/inactiveUserSuperAdmin',check_auth_superadmin,backupController.inactiveUserSuperAdmin);
-route.post('/SupportRestoreBackup',check_auth_superadmin,fileFunctions.backupFile,backupController.SupportRestoreBackup);
-route.post('/supportRestoreDatabase',check_auth_superadmin,backupController.supportRestoreDatabase);
+// route.post('/inactiveUserSuperAdmin',check_auth_superadmin,backupController.inactiveUserSuperAdmin);
+// //route.post('/SupportRestoreBackup',check_auth_superadmin,fileFunctions.backupFile,backupController.SupportRestoreBackup);
+// route.post('/supportRestoreDatabase',check_auth_superadmin,backupController.supportRestoreDatabase);
 
 route.post('/viewAllcompanyregisteration',check_auth_superadmin,authController.viewAllcompanyregisteration);
 route.post('/viewCompanyregisteration',check_auth_superadmin,authController.viewCompanyregisteration);
