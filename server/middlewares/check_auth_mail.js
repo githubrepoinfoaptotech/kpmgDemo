@@ -7,13 +7,12 @@ require("dotenv").config();
 module.exports = async (req,res,next) => {
     
    try { 
-        
-        if (!req.headers['Token']){
+        if (!req.headers['token']){
             return res.status(403).send({ 
                 auth: false, message: 'No token provided.' 
             });
         }
-        req.body.clientId =  req.headers['Token'];
+        req.body.clientId =  req.headers['token'];
         next();
     }   
     catch(err){
