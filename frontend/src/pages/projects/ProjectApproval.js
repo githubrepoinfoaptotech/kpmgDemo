@@ -461,7 +461,7 @@ function ProjectApproval({
                       onClick={approveSubmit(handleAddApprover)}
                       disabled={approveIsSubmitting}
                     >
-                      Save
+                      Send
                     </Button>
                   </Grid>
                 </Grid>

@@ -866,7 +866,7 @@ function CompanyRegister(props) {
                   <div className={classes.space + " " + classes.alignItemsEnd}  >
 
 
-                    {requirementsView?.jd !== "https://liverefo.s3.amazonaws.com/" && requirementsView?.jd !== null ? <>
+                    {requirementsView?.jd !== `${process.env.REACT_APP_AZURE_BUCKET_URL}` && requirementsView?.jd !== null ? <>
                       <Tooltip
                         title="View JD"
                         placement="bottom"

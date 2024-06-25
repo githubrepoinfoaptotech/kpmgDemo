@@ -113,7 +113,7 @@ export default function Candidates(props) {
     "11",
     "12",
   ];
-  const days = Array.from({ length: 31 }, (_, i) => i + 1);
+  const days = Array.from({ length: 31 }, (_, i) => (i + 1).toString().padStart(2, '0'));
   const years = Array.from({ length: 60 }, (_, i) => moment(new Date()).format("YYYY") - i);
 
 
@@ -288,7 +288,7 @@ export default function Candidates(props) {
 
   const [page, setPage] = useState(0);
   const [currerntPage, setCurrerntPage] = useState(1);
-  const [rowsPerPage] = useState(50);
+  const [rowsPerPage] = useState(10);
 
   const [reducerValue, forceUpdate] = useReducer((x) => x + 1, 0);
   const joiningRef = useRef();
@@ -2497,7 +2497,7 @@ export default function Candidates(props) {
                 <>{item.requirement?.requirementName} <br /> {" (" + item.requirement?.uniqueId + ")"} </>,
                 item.requirement?.recruiter?.firstName + " " + item.requirement?.recruiter?.lastName,
                 item.recruiter?.firstName + " " + item.recruiter?.lastName,
-                <>{item.candidateDetail?.resume !== "https://liverefo.s3.amazonaws.com/" ? (<>   <Grid container className={classes.space}>     <Grid item xs className={classes.toolAlign}>
+                <>{item.candidateDetail?.resume !== `${process.env.REACT_APP_AZURE_BUCKET_URL}` ? (<>   <Grid container className={classes.space}>     <Grid item xs className={classes.toolAlign}>
                   <Tooltip title="View Resume" placement="bottom" aria-label="view"       >
                     <DescriptionIcon className={classes.toolIcon} onClick={() => {
                       handleResumeOpen(); setFile([
