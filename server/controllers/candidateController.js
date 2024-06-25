@@ -2893,7 +2893,7 @@ else{
     myArr.push({ count: data, month: myMonthArr[i] });
   });
 }
-      if (myMonthArr[i] == 12) {
+      if (myMonthArr[i] === 12) {
         Year = Year + 1;
       }
   }
