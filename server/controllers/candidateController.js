@@ -17,7 +17,7 @@ const csvDownload = require("../functions/csvDownload");
 const dashboardreport = require("../functions/dashboardreport");
 const myReport = require("../functions/candidatereport");
 const recruiterCandidateActivity = require("../models/recruiterCandidateActivity");
-const existingCandidate=require("../models/existingCandidate");
+//const existingCandidate=require("../models/existingCandidate");
 const candidateCpv=require("../models/candidateCpv");
 const email = require("../config/email.js");
 require("dotenv").config();
@@ -34,7 +34,7 @@ const Source = require("../models/source");
 const firebaseNotification = require("../functions/firebaseSendNotification");
 const statusList = require("../models/statusList");
 const myCandidateStatus = require("../models/myCandidateStatus");
-const existingCandidates = require("../models/existingCandidate");
+// const existingCandidates = require("../models/existingCandidate");
 const clients = require("../models/client");
 //
 exports.addcandidateRequirement = async (req, res) => {
@@ -198,13 +198,13 @@ exports.candidateExist=async(req,res)=>{
           },
         ],
       }).then(async (data) => {
-        const isExist=await existingCandidates.findOne({where: {mainId:req.mainId,
-          [Op.or]: {
-            email: req.body.email,
-            mobile: "91" + req.body.mobile,
-          },
-        }});
-        if (data||isExist) {
+        // const isExist=await existingCandidates.findOne({where: {mainId:req.mainId,
+        //   [Op.or]: {
+        //     email: req.body.email,
+        //     mobile: "91" + req.body.mobile,
+        //   },
+        // }});
+        if (data) {
           res.status(200).json({
             status: false,
             message: "Email id or Contact number is already in use",
@@ -3185,14 +3185,16 @@ exports.uploadExistingCandidates=async(req,res)=>{
       name: row[1],
       email: row[2],
       mobile: row[3],
+      skills:row[4],
+      dob:row[5]
     };
   });
   for(i=0;i<transformedData.length;i++){
     currentData=transformedData[i];
-    var isExist=await existingCandidate.findOne({where:{mainId:req.mainId,[Op.or]:{mobile:currentData.mobile,email:currentData.email}}});
+    var isExist=await candidateDetails.findOne({where:{mainId:req.mainId,[Op.or]:{mobile:currentData.mobile,email:currentData.email}}});
     if(!isExist){
-      await existingCandidate.create({mobile:currentData.mobile,email:currentData.email,name:currentData.name,mainId:req.mainId,
-        createdBy:req.recruiterId});
+      await candidateDetails.create({mobile:currentData.mobile,email:currentData.email,name:currentData.name,mainId:req.mainId,
+        createdBy:req.recruiterId,skills:currentData.skills,dob:req.body.dob});
      
     }
   }
