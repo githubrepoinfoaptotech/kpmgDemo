@@ -8,6 +8,7 @@ const moment=require('moment');
 // client control---------------------------------------------------------------------------------------------------------
 //
 const {Op}=require("sequelize");
+const requirement = require("../models/requirement");
 //
 exports.addClient = async (req, res) => {
   try {
@@ -686,6 +687,8 @@ exports.changeClientStatus=async(req,res)=>{
         statusCode:102,
         updatedBy:req.userId
       });
+      await requirement.update({statusCode:202,
+        updatedBy:req.userId},{where:{clientId:data.id}});
       if(req.companyType=="COMPANY")
         {
           res.status(200).json({status:true,message:"Project Is Now Inactive"});
@@ -701,6 +704,8 @@ exports.changeClientStatus=async(req,res)=>{
         statusCode:101,
         updatedBy:req.userId
       }); 
+      await requirement.update({statusCode:201,
+        updatedBy:req.userId},{where:{clientId:data.id}});
       if(req.companyType=="COMPANY")
         {
           res.status(200).json({status:true,message:"Project Is Now Active"});

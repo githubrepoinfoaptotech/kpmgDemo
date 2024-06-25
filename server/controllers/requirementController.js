@@ -486,7 +486,7 @@ exports.requirementStatusCodeList=async(req,res)=>{
 
 exports.changeRequirementStatus=async (req,res)=>{
   console.log(req.body);
-  await requirements.findOne({where:{id:req.body.requirementId}}).then(async data=>{
+  await requirements.findOne({where:{id:req.body.requirementId},include:[{model:client,attributes:['statusCode']}]}).then(async data=>{
     if(data.statusCode==201){
       await data.update({  
         statusCode:202,
@@ -495,11 +495,18 @@ exports.changeRequirementStatus=async (req,res)=>{
       res.status(200).json({status:true,message:"Requirement Is Now Inactive"});
     } 
     else{ 
+      if(data.statusCode.client==101)
+      {  
       await data.update({
         statusCode:201,
         updatedBy:req.userId
-      }); 
+      });
       res.status(200).json({status:true,message:"Requirement Is Now Active"});
+      }
+      else
+      {
+        res.status(500).json({status:true,message:"Project Is Inactive"});
+      }
     }
   }).catch(e=>{
     console.log(e);
