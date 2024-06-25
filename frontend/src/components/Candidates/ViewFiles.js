@@ -17,7 +17,6 @@ import { getFileExtension } from "../../utils/getextension.js";
 
 const ViewFiles = ({ handleFileClose, fileOpen, docFile, fileType }) => {
     const classes = useStyles();
-    console.log(process.env.REACT_APP_AWS_BUCKET_URL, docFile, '----')
 
     const fileExtension = docFile ? getFileExtension(docFile) : null;
     //   const isFileType = docFile[0]?.url.split('.').pop()
@@ -47,7 +46,7 @@ const ViewFiles = ({ handleFileClose, fileOpen, docFile, fileType }) => {
                             </div>
                             <Grid item xs={12}>
                                 <div className={classes.iframediv}>
-                                    {process.env.REACT_APP_AWS_BUCKET_URL === docFile ?
+                                    {process.env.REACT_APP_AZURE_BUCKET_URL === docFile ?
                                         <div style={{ color: 'red', marginTop: '50px' }}>
                                             <p>No Photo found here...</p>
                                         </div>
@@ -67,7 +66,7 @@ const ViewFiles = ({ handleFileClose, fileOpen, docFile, fileType }) => {
                                     </div>
                                 </div>
                                 <Grid item xs={12}>
-                                    {process.env.REACT_APP_AWS_BUCKET_URL === docFile ?
+                                    {process.env.REACT_APP_AZURE_BUCKET_URL === docFile ?
                                         <div style={{ color: 'red', marginTop: '50px' }}>
                                             <p>No File found here...</p>
                                         </div>

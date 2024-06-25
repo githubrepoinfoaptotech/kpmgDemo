@@ -1309,7 +1309,7 @@ export default function Tables() {
                           </div>
 
                           {requirementsEdit?.jd !==
-                            "https://liverefo.s3.amazonaws.com/" &&
+                           `${process.env.REACT_APP_AZURE_BUCKET_URL}` &&
                             requirementsEdit?.jd !== "" ? (
                             <>
                               <Tooltip
@@ -1612,7 +1612,7 @@ export default function Tables() {
                       className={classes.space + " " + classes.alignItemsEnd}
                     >
                       {requirementsView?.jd !==
-                        "https://liverefo.s3.amazonaws.com/" ? (
+                        `${process.env.REACT_APP_AZURE_BUCKET_URL}` ? (
                         <>
                           <Tooltip
                             title="View JD"

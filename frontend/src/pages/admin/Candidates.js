@@ -120,7 +120,7 @@ export default function Candidates(props) {
     "11",
     "12",
   ];
-  const days = Array.from({ length: 31 }, (_, i) => i + 1);
+  const days = Array.from({ length: 31 }, (_, i) => (i + 1).toString().padStart(2, '0'));
   const years = Array.from(
     { length: 60 },
     (_, i) => moment(new Date()).format("YYYY") - i,
@@ -289,7 +289,7 @@ export default function Candidates(props) {
 
   const [page, setPage] = useState(0);
   const [currerntPage, setCurrerntPage] = useState(1);
-  const [rowsPerPage] = useState(50);
+  const [rowsPerPage] = useState(10);
 
   const [reducerValue, forceUpdate] = useReducer((x) => x + 1, 0);
   const joiningRef = useRef();
@@ -2654,7 +2654,7 @@ export default function Candidates(props) {
     customToolbar: () => <HeaderElements />,
     onFilterChange: (changedColumn, filterList) => { },
     filterType: "dropdown",
-    rowsPerPage: 50,
+    rowsPerPage: 10,
     // rowsExpanded: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
     expandableRows: true,
     expandableRowsHeader: false,
@@ -3118,7 +3118,7 @@ export default function Candidates(props) {
                 item.requirement?.recruiter?.firstName + " " + item?.requirement?.recruiter?.lastName,
                 <>
                   {item.candidateDetail?.resume !==
-                    "https://liverefo.s3.amazonaws.com/" ? (
+                    `${process.env.REACT_APP_AZURE_BUCKET_URL}` ? (
                     <>
                       <Grid container className={classes.space}>
                         <Grid item xs className={classes.toolAlign}>
@@ -3206,7 +3206,7 @@ export default function Candidates(props) {
 
           <Grid container spacing={2} className={classes.pagination}>
             <TablePagination
-              rowsPerPageOptions={[50]}
+              rowsPerPageOptions={[10]}
               component="div"
               count={count}
               rowsPerPage={rowsPerPage}
