@@ -494,7 +494,7 @@ export default function Edit(props) {
                             </Button>
                           </label>
                         </div>
-                        {props.candidatesEdit?.resume !== "https://liverefo.s3.amazonaws.com/" && props.candidatesEdit?.resume !== "" ?
+                        {props.candidatesEdit?.resume !== `${process.env.REACT_APP_AZURE_BUCKET_URL}` && props.candidatesEdit?.resume !== "" ?
                           <div style={{ display: 'flex', gap: "5px" }}>
                             <Tooltip
                               title="View Resume"
@@ -561,7 +561,7 @@ export default function Edit(props) {
                                 </Button>
                               </label>
                             </div>
-                            {props.candidatesEdit?.document !== "https://liverefo.s3.amazonaws.com/" && props.candidatesEdit?.document !== "" ?
+                            {props.candidatesEdit?.document !== `${process.env.REACT_APP_AZURE_BUCKET_URL}` && props.candidatesEdit?.document !== "" ?
                               <div style={{ display: 'flex', gap: "5px" }}>
                                 <Tooltip
                                   title="View document"
@@ -625,7 +625,7 @@ export default function Edit(props) {
                                 </Button>
                               </label>
                             </div>
-                            {props.candidatesEdit?.photo !== "https://liverefo.s3.amazonaws.com/" && props.candidatesEdit?.photo !== "" ?
+                            {props.candidatesEdit?.photo !== `${process.env.REACT_APP_AZURE_BUCKET_URL}` && props.candidatesEdit?.photo !== "" ?
                               <div style={{ display: 'flex', gap: "5px" }}>
                                 <Tooltip
                                   title="View Profile"
@@ -1160,7 +1160,7 @@ export default function Edit(props) {
                                 </div>
 
 
-                                {props.candidatesEdit?.candidateMindsetAssessmentLink !== "https://liverefo.s3.amazonaws.com/" && props.candidatesEdit?.candidateMindsetAssessmentLink !== "" ? <>
+                                {props.candidatesEdit?.candidateMindsetAssessmentLink !== `${process.env.REACT_APP_AZURE_BUCKET_URL}` && props.candidatesEdit?.candidateMindsetAssessmentLink !== "" ? <>
                                   <Tooltip
                                     title="View Candidate MindSet Assessment"
                                     placement="bottom"

@@ -245,19 +245,19 @@ export default function Header(props) {
   const monthDropdown = [
     {
       id: "1",
-      Month: "JAN",
+      Month: "JANUARY",
     },
     {
       id: "2",
-      Month: "FEB",
+      Month: "FEBRUARY",
     },
     {
       id: "3",
-      Month: "MAR",
+      Month: "MARCH",
     },
     {
       id: "4",
-      Month: "APR",
+      Month: "APRIL",
     },
 
     {
@@ -266,35 +266,35 @@ export default function Header(props) {
     },
     {
       id: "6",
-      Month: "JUN",
+      Month: "JUNE",
     },
     {
       id: "7",
-      Month: "JUL",
+      Month: "JULY",
     },
     {
       id: "8",
-      Month: "AUG",
+      Month: "AUGUST",
     },
 
     {
       id: "9",
-      Month: "SEP",
+      Month: "SEPTEMBER",
     },
 
     {
       id: "10",
-      Month: "OCT",
+      Month: "OCTOBER",
     },
 
     {
       id: "11",
-      Month: "NOV",
+      Month: "NOVEMBER",
     },
 
     {
       id: "12",
-      Month: "DEC",
+      Month: "DECEMBER",
     },
   ];
 
@@ -320,6 +320,34 @@ export default function Header(props) {
     setAnchorEl2(event.currentTarget);
     setQuickAccessMobileOpen((previousOpen) => !previousOpen);
   };
+
+  const handleFromMonthChange = (e) => {
+    const selectedFromMonth = e.target.value;
+    const selectedFromMonthIndex = monthDropdown.findIndex(month => month.id === selectedFromMonth);
+
+    if (selectedFromMonthIndex !== -1) {
+      const endMonthIndex = (selectedFromMonthIndex + 11) % 12;
+      const endMonth = monthDropdown[endMonthIndex].id;
+
+      setMonthValue({
+        fromMonth: selectedFromMonth,
+        toMonth: endMonth,
+      });
+    } else {
+      console.error('Invalid fromMonth selected:', selectedFromMonth);
+    }
+  };
+
+  const getFinancialYearLabel = (fromMonth, toMonth) => {
+    const fromMonthObject = monthDropdown.find(month => month.id === fromMonth);
+    const toMonthObject = monthDropdown.find(month => month.id === toMonth);
+
+    if (fromMonthObject && toMonthObject) {
+      return `${fromMonthObject.Month}-${toMonthObject.Month}`;
+    } else {
+      return 'Invalid month selection';
+    }
+  };;
 
   const qaOpen = quickAccessOpen && Boolean(anchorEl2);
   const qaMobileOpen = quickAccessMobileOpen && Boolean(anchorEl2);
@@ -1381,11 +1409,9 @@ export default function Header(props) {
   }
 
   const [Month, setMonthValue] = useState({
-    toMonth: "",
-    fromMonth: "",
+    fromMonth: "4",
+    toMonth: "3",
   });
-
-
 
 
   const validationSchema = Yup.object().shape({
@@ -1649,20 +1675,24 @@ export default function Header(props) {
   }
 
   function handleCompanySettings(values) {
-    if (fromRef.current.value !== "" && toRef.current.value !== "") {
-      handleNotificationCall("error", "Check Financial Year Properly");
-      return
-    }
 
-    return new Promise((resolve) => {
+    // if (fromRef.current.value === "" || toRef.current.value === "") {
+    //   handleNotificationCall("error", "Both From Month and To Month are required.");
+    //   return;
+    // }
+
+    const dataToSend = {
+      fromMonth: Month.fromMonth,
+      toMonth: Month.toMonth,
+    };
+
+    return new Promise((resolve, reject) => {
       setLoader(true);
+
       axios({
         method: "post",
         url: `${process.env.REACT_APP_SERVER}admin/editMyCompanySettings`,
-        data: {
-          fromMonth: fromRef.current.value,
-          toMonth: toRef.current.value,
-        },
+        data: dataToSend,
         headers: {
           "Content-Type": "application/json",
           Authorization: token,
@@ -1677,12 +1707,17 @@ export default function Header(props) {
             handleNotificationCall("error", response.data.message);
           }
           setLoader(false);
+          resolve();
         })
         .catch(function (error) {
-          console.log(error);
+          console.error(error);
+          handleNotificationCall("error", "An error occurred while updating settings.");
+          setLoader(false);
+          reject(error);
         });
     });
   }
+
 
   function handleBackupOnly(view) {
     setLoader(true);
@@ -1967,9 +2002,11 @@ export default function Header(props) {
       },
     }).then(function (response) {
       if (response.data.status === true) {
+        const toMonthVal = response.data.data.toMonth
+        const fromMonthVal = response.data.data.fromMonth
         setMonthValue({
-          toMonth: response.data.data.toMonth,
-          fromMonth: response.data.data.fromMonth,
+          toMonth: toMonthVal.toString(),
+          fromMonth: fromMonthVal.toString(),
         });
       }
     });
@@ -2234,19 +2271,13 @@ export default function Header(props) {
                               root: classes.customSelectField,
                               icon: classes.customSelectIcon,
                             }}
-                            onChange={(e) => {
-                              setMonthValue({
-                                ...Month,
-                                fromMonth: e.target.value,
-                              });
-                            }}
+                            onChange={handleFromMonthChange}
                             inputRef={fromRef}
                             disableUnderline
                           >
                             {monthDropdown.map((item, index) => {
                               return [
                                 <MenuItem value={item.id}>
-
                                   {item.Month}
                                 </MenuItem>,
                               ];
@@ -2256,6 +2287,7 @@ export default function Header(props) {
                           <Select
                             labelId="toMonth"
                             name="toMonth"
+                            style={{ display: 'none' }}
                             defaultValue={Month.toMonth}
                             onChange={(e) => {
                               setMonthValue({
@@ -2273,7 +2305,6 @@ export default function Header(props) {
                             {monthDropdown.map((item, index) => {
                               return [
                                 <MenuItem value={item.id}>
-
                                   {item.Month}
                                 </MenuItem>,
                               ];
@@ -2281,6 +2312,9 @@ export default function Header(props) {
                           </Select>
                         </div>
                       </FormControl>
+                    </Grid>
+                    <Grid item xs={12}>
+                      {getFinancialYearLabel(Month.fromMonth, Month.toMonth)}
                     </Grid>
                   </Grid>
                 </CardContent>
@@ -4297,29 +4331,29 @@ export default function Header(props) {
 
         <DialogContent className={classes.chatListBackGround}>
           <form onSubmit={inviteSubmit(inviteMSME)}>
-          <Grid container direction="row">
-            <Grid item xs={12}>
-              <InputLabel shrink htmlFor="email">
-                Enter Email
-              </InputLabel>
-              <FormControl className={classes.margin}>
-                <TextField
-                  classes={{ root: classes.customTextField }}
-                  InputProps={{ disableUnderline: true }}
-                  size="small"
-                  placeholder="Enter Email ID"
-                  id="email"
-                  {...invite("email")}
-                  name="email"
-                  error={inviteErrors.email ? true : false}
-                />
+            <Grid container direction="row">
+              <Grid item xs={12}>
+                <InputLabel shrink htmlFor="email">
+                  Enter Email
+                </InputLabel>
+                <FormControl className={classes.margin}>
+                  <TextField
+                    classes={{ root: classes.customTextField }}
+                    InputProps={{ disableUnderline: true }}
+                    size="small"
+                    placeholder="Enter Email ID"
+                    id="email"
+                    {...invite("email")}
+                    name="email"
+                    error={inviteErrors.email ? true : false}
+                  />
 
-                <Typography variant="inherit" color="error">
-                  {inviteErrors.email?.message}
-                </Typography>
-              </FormControl>
+                  <Typography variant="inherit" color="error">
+                    {inviteErrors.email?.message}
+                  </Typography>
+                </FormControl>
+              </Grid>
             </Grid>
-          </Grid>
 
             <div className={classes.sendWhatsapp}>
               <Button
