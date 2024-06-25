@@ -136,7 +136,7 @@ route.post("/viewAllAssigendRequirements",check_auth_admin,requirementController
 
 route.post("/changeAssignedRequirementStatus",check_auth_admin,requirementController.changeAssignedRequirementStatus);
 //existing Candidates
-//route.post("/uploadExistingCandidates",check_auth_admin,fileUploader.existingCandidateUpload,candidateController.uploadExistingCandidates)
+route.post("/uploadExistingCandidates",check_auth_admin,fileUploader.existingCandidateUpload,candidateController.uploadExistingCandidates)
 route.post("/sendCV",check_auth_admin,candidateController.sendCV);
 
 route.post("/msmeSearchCompany",check_auth_admin,authController.msmeSearchCompany);

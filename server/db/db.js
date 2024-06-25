@@ -1,7 +1,7 @@
 
 
 const Sequelize= require("sequelize");
-
+require("dotenv").config();
 // const sequelize1=new Sequelize("jobportal","postgres","postgres",{
 //     dialect:"postgres",
 //     host:"3.14.9.124",
@@ -37,9 +37,13 @@ const Sequelize= require("sequelize");
         console.error('Unable to connect to the database:', error);
         }
 */
-const sequelize = new Sequelize("kpmg_refo", "citus", "kpmg@infoaptotech019", {
+dbname=process.env.dbname
+dbuser=process.env.dbuser
+dbpass=process.env.dbpass
+dbhost=process.env.dbhost
+const sequelize = new Sequelize(dbname, dbuser, dbpass, {
     dialect: "postgres",
-    host: "c-kpmgdb.nxdf6432pofdnp.postgres.cosmos.azure.com",
+    host: dbhost,
     port: 5432, // Add the port if it's not the default one
     logging: false,
     dialectOptions: {

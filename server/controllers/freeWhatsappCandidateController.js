@@ -309,7 +309,7 @@ exports.addFreeCandidate = async (req, res) => {
           isExternal:"YES",
           createdBy:req.recruiterId,
           currentCompanyName:req.body.currentCompanyName,
-          panNumber:request.body.panNumber,
+          panNumber:req.body.panNumber,
           linkedInProfile:req.body.linkedInProfile
         };
 
@@ -1436,7 +1436,7 @@ exports.reciveCandidateConformation=async(req,res)=>
     var cpv_data=await candidateCpv.findOne({where:{id:req.body.id}});
       if(cpv_data)
         {
-          await data.cpv_data({
+          await cpv_data.update({
             candidateConformation:req.body.candidateConformation
           });
           res.status(200).json({ status: true, message: "Response Recorded" });

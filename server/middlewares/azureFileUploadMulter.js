@@ -276,3 +276,36 @@ exports.screenShotUploader=async(req,res,next)=>{
         res.status(500).json({ status: false, message: 'Internal server error' });
     }
   };
+
+exports.existingCandidateUpload=async(req,res,next)=>{
+  const fileStorage = multer.diskStorage({
+    // Destination to store image      
+    destination: "./"+req.mainId+"/"+"exitingCandidates"+"/", 
+      filename: async(req, file, cb) => {
+          cb(null, file.originalname)
+            // file.fieldname is name of the field (image)
+            // path.extname get the uploaded file extension
+    }
+});
+const fileUpload = multer({
+    storage: fileStorage,
+    // limits: {
+    //   fileSize: 25000000 // 1000000 Bytes = 1 MB
+    // },
+    fileFilter(req, file, cb) {
+      if (!file.originalname.match(/\.(xlsx)$/)) { 
+         // upload only png and jpg format
+         return cb(new Error('Please upload a another file'))
+       }
+     cb(undefined, true) 
+  }
+}).single('backup',1);
+fileUpload(req,res, function(err){
+    if(err){
+      console.log(err);
+        res.status(200).json({status:false,message: 'Unable to upload Check file type or if  the file is curropted!!'});
+    } else {
+        next();
+    }
+});
+};

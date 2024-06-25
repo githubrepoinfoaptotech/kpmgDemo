@@ -121,12 +121,25 @@ catch(e){
 
 };
 exports.viewAllRequirements = async (req, res) => {
+  if(req.body.page){
   var page = req.body.page;
+  }
+  else
+  {
+  var page = 1
+  }
   var limit = 10;
   //attributes=[]
  var mywhere={mainId:req.mainId};
  if(req.body.recruiterId){
-    mywhere.recruiterId=req.body.recruiterId
+  if(req.roleName!="ADMIN")
+    {
+      mywhere['$or']={recruiterId:req.body.recruiterId,'$client.handlerId$':req.body.recruiterId}
+    }
+    else
+    {
+      mywhere.recruiterId=req.body.recruiterId
+    }
  }
   if(req.body.requirementId){
     mywhere.id=req.body.requirementId;
@@ -141,6 +154,7 @@ exports.viewAllRequirements = async (req, res) => {
         [Op.between]: [fromDate, toDate]
       }
     }
+    console.log(mywhere);
     if(req.body.fileDownload){
       requirements
     .findAll({
@@ -245,11 +259,24 @@ exports.viewAllRequirements = async (req, res) => {
   }
 };
 exports.myRequirements = async (req, res) => {
-  var page = req.body.page;
+  if(req.body.page){
+    var page = req.body.page;
+    }
+    else
+    {
+    var page = 1
+    }
   var limit = 10;
   var mywhere={mainId:req.mainId};
-  mywhere.recruiterId=req.recruiterId
- 
+  //console.log(req.roleName);
+  if (req.roleName === "CLIENTCOORDINATOR") {
+    mywhere[Op.or] = [
+      { recruiterId: req.recruiterId },
+      { '$client.handlerId$': req.recruiterId }
+    ];
+  } else {
+    mywhere.recruiterId = req.recruiterId;
+  }
   if(req.body.requirementId){ 
     mywhere.id=req.body.requirementId;
 }
@@ -263,6 +290,7 @@ exports.myRequirements = async (req, res) => {
       }
     }
   }
+  //console.log(mywhere);
   requirements
     .findAndCountAll({
       distinct: true,
@@ -638,7 +666,13 @@ exports.viewAllAssigendRequirements=async(req,res)=>{
 }
 
 exports.viewRequirementCandidates=async(req,res)=>{
+  if(req.body.page){
   var page = req.body.page;
+  }
+  else
+  {
+  var page = 1
+  }
     var limit = 10;
     var mywhere = {requirementId:req.body.requirementId};
 

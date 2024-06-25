@@ -15,7 +15,13 @@ const Source = require('../models/source');
 
 exports.getData=async(req,code)=>{
 
-        var page = req.body.page;
+        if(req.body.page){
+  var page = req.body.page;
+  }
+  else
+  {
+  var page = 1
+  }
         var limit = 10;
         var mywhere = { mainId: req.mainId, statusCode: code };
         

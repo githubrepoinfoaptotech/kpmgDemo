@@ -286,7 +286,13 @@ exports.viewAdmin = async (req, res) => {
 exports.viewAllAdmin = async (req, res) => {
   try {
     var limit = 10;
-    var page = req.body.page;
+    if(req.body.page){
+  var page = req.body.page;
+  }
+  else
+  {
+  var page = 1
+  }
     var mywhere={ roleName: "ADMIN" };
     if(req.body.adminId){
       mywhere.id=req.body.adminId
@@ -629,7 +635,13 @@ exports.changeMyPassword = async (req, res) => {
 
 exports.viewAllUsers = async (req, res) => {
   try {
-    var page = req.body.page;
+    if(req.body.page){
+  var page = req.body.page;
+  }
+  else
+  {
+  var page = 1
+  }
     var limit = 10;
     // await user.findAndCountAll({where:{mainId:req.mainId,roleName:{[Op.ne]:"ADMIN"}},attributes:['id','email','roleName','isActive'],
     // include:[{
@@ -754,9 +766,9 @@ exports.setLogo = async (req, res) => {
   recruitersSettings.findOne({ where: { mainId: req.mainId } }).then(data => {
     if (data) {
       data.update({
-        image: 'profilePicture'+"/"+req.file.blobName
+        image: 'images'+"/"+req.file.blobName
       });
-      res.status(200).json({ status: true, message: "Image Updated Successfully", image: process.env.liveUrl+'profilePicture'+"/"+req.file.blobName});
+      res.status(200).json({ status: true, message: "Image Updated Successfully", image: process.env.liveUrl+'images'+"/"+req.file.blobName});
     }
     else {
       res.status(200).json({ status: false, message: "User Not Found" });

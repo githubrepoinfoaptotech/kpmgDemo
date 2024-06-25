@@ -339,7 +339,13 @@ exports.editClient = async (req, res) => {
 };
 exports.viewAllClients = async (req, res) => {
 
+  if(req.body.page){
   var page = req.body.page;
+  }
+  else
+  {
+  var page = 1
+  }
   var limit = 10;
   const attributes=["id","mainId","statusCode","uniqueId","clientName","approved","clientWebsite","clientIndustry","aggStartDate","aggEndDate","createdAt"]
   var mywhere={ mainId: req.mainId };

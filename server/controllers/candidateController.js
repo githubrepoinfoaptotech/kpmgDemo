@@ -877,7 +877,13 @@ exports.getAllCandidateStatus = async (req, res) => {
 };
 exports.viewAllCanditates = async (req, res) => {
   try {
-    var page = req.body.page;
+    if(req.body.page){
+  var page = req.body.page;
+  }
+  else
+  {
+  var page = 1
+  }
     var limit = 10;
     var mywhere = { mainId: req.mainId };
     reqWhere={};
@@ -1296,10 +1302,29 @@ exports.viewCandidate = async (req, res) => {
 
 exports.myCandidates = async (req, res) => {
   try {
-    var page = req.body.page;
+    if(req.body.page){
+  var page = req.body.page;
+  }
+  else
+  {
+  var page = 1
+  }
     var limit = 10;
-    mywhere = { mainId: req.mainId, recruiterId: req.recruiterId };
-
+    mywhere = { mainId: req.mainId};
+    if(req.body.requirementId)
+      {
+        mywhere.requirementId=req.body.requirementId }
+        else
+        {
+          mywhere.recruiterId= req.recruiterId 
+        }
+    // if (req.roleName === "CLIENTCOORDINATOR") {
+    //   mywhere[Op.or] = [
+    //     { recruiterId: req.recruiterId ,'$requirement.client.handlerId':req.recruiterId}
+    //   ]
+    // } else {
+    //   mywhere.recruiterId = req.recruiterId;
+    // }
     if (req.body.fromDate && req.body.toDate) {
       const fromDate = moment(req.body.fromDate).startOf("day").toISOString();
       const toDate = moment(req.body.toDate).endOf("day").toISOString();
@@ -1406,7 +1431,7 @@ exports.myCandidates = async (req, res) => {
               },
               {
                 model: client,
-                attributes: ["clientName"],
+                attributes: ["clientName",'handlerId'],
                 include: [{ model: statusCode, attributes: ["statusName","statusCode"] },{ model: recruiter, as: 'recruiter', attributes: ['id', 'firstName', 'lastName'] },
                 { model: recruiter, as: 'handler', attributes: ['id', 'firstName', 'lastName'] }],
               },
@@ -1817,7 +1842,13 @@ exports.invoicedCandidates = async (req, res) => {
       });
   } else {
     var limit = 10;
-    var page = req.body.page;
+    if(req.body.page){
+  var page = req.body.page;
+  }
+  else
+  {
+  var page = 1
+  }
     var user_dat = await user.findOne({ where: { id: req.userId } });
 
     candidate
@@ -2047,7 +2078,13 @@ exports.getMonthlyData = async (req, res) => {
 
 exports.candidateReports = async (req, res) => {
   var limit = 10;
+  if(req.body.page){
   var page = req.body.page;
+  }
+  else
+  {
+  var page = 1
+  }
   var dateObj = new Date();
   var month = dateObj.getUTCMonth() + 1; //months from 1-12
   var day = dateObj.getUTCDate();
@@ -2443,7 +2480,13 @@ exports.getAllDropedCandidate = async (req, res) => {
       const xdata = await csvDownload.csvDashboard(req, 302);
       res.status(200).json({ data: xdata, status: true });
     } else {
-      var page = req.body.page;
+      if(req.body.page){
+  var page = req.body.page;
+  }
+  else
+  {
+  var page = 1
+  }
       var limit = 10;
       var mywhere = { mainId: req.mainId, statusCode: 302 };
 
@@ -2906,7 +2949,13 @@ exports.getAllReportCount = async (req, res) => {
 };
 
 exports.singleCandidateSearch = async (req, res) => {
+  if(req.body.page){
   var page = req.body.page;
+  }
+  else
+  {
+  var page = 1
+  }
   var limit = 10;
   myWhere = { mainId: req.mainId };
   if (req.body.skills && req.body.skills != "") {
@@ -2986,7 +3035,13 @@ exports.singleCandidateSearch = async (req, res) => {
 };
 
 exports.singleMyCandidateSearch = async (req, res) => {
+  if(req.body.page){
   var page = req.body.page;
+  }
+  else
+  {
+  var page = 1
+  }
   var limit = 10;
   var myWhere = { mainId: req.mainId, recruiterId: req.recruiterId };
   if (req.body.skills && req.body.skills != "") {
@@ -3181,22 +3236,30 @@ exports.uploadExistingCandidates=async(req,res)=>{
   const worksheet = workbook.Sheets[sheetName];
   const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
   const transformedData = jsonData.slice(1).map(row => {
-    return {
-      name: row[1],
+    if(row.length!=0)
+      {
+      
+      return {
+      firstName: row[1].split(" ")[0],
+      lastName: row[1].split(" ")[1],
       email: row[2],
       mobile: row[3],
       skills:row[4],
       dob:row[5]
     };
+    }
   });
+  //console.log(transformedData);
   for(i=0;i<transformedData.length;i++){
+    if(transformedData[i])
+    {
     currentData=transformedData[i];
     var isExist=await candidateDetails.findOne({where:{mainId:req.mainId,[Op.or]:{mobile:currentData.mobile,email:currentData.email}}});
     if(!isExist){
-      await candidateDetails.create({mobile:currentData.mobile,email:currentData.email,name:currentData.name,mainId:req.mainId,
-        createdBy:req.recruiterId,skills:currentData.skills,dob:req.body.dob});
-     
+      await candidateDetails.create({mobile:currentData.mobile,email:currentData.email,lastName:currentData.lastName,firstname:currentData.firstname,mainId:req.mainId,
+        createdBy:req.recruiterId,skills:currentData.skills,dob:currentData.dob});
     }
+  }
   }
   deleteFolder(req.mainId);
   res.status(200).json({status:true});

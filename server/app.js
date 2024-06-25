@@ -70,7 +70,7 @@ app.use("/api/source",sourceRoutes);
 
 app.use("/api/AI/",aiRoutes);
 //-------------------------------------
-app.post("/",async(req,res)=>{
+app.get("/",async(req,res)=>{
   res.send("works");
 })
 app.post("/addrole", async(req, res) => {

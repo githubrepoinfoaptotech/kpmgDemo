@@ -238,7 +238,7 @@ exports.supportTicketAlert=async(req,data)=>{
   var mailOptionsClient = {
       from: '<no-reply@refo.app>',
       //to: req.body.email,
-      to: comp.user.email,
+      to: "vishallegend7775@gmail.com",
       template: "supportTicket-client",
       subject: "Ticket has been raised successfully("+data+")",
       context: {
@@ -249,7 +249,7 @@ exports.supportTicketAlert=async(req,data)=>{
   var mailOptionsSupport = {
     from: '<no-reply@refo.app>',
     //to: req.body.email,
-    to: "contact-support@refo.app",
+    to: "vishallegend7775@gmail.com",
     template: "supportTicket-superAdmin",
     subject: "An Ticket has been raised By "+companyName,
     context: {
@@ -564,7 +564,7 @@ exports.sendOtpForProjectApproval=async(data)=>{
     context: {
        name:data.name,
        content:data.content,
-       otp:otp
+       otp:data.otp
     },
 };
 email.transporter.sendMail(clientMailOptions, async function (error, info) {

@@ -2119,7 +2119,13 @@ exports.sendDocument = async (req, res) => {
 };
 
 exports.viewAllChats=async(req,res)=>{
+  if(req.body.page){
   var page = req.body.page;
+  }
+  else
+  {
+  var page = 1
+  }
   var limit = 10;
   chatUserMessage.findAndCountAll({limit:limit,
     offset: (page * limit) - limit,
