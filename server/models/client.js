@@ -122,7 +122,7 @@ const clients=sequelize.define("clients",{
             fields: ['id']
         },
         {
-            fields: ["mainId","uniqueId"]
+            fields: ["mainId","uniqueId","handlerId"]
         }
     ]
   }
