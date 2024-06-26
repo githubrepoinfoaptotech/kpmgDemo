@@ -468,7 +468,7 @@ exports.getAllRequirementList=async(req,res)=>{
 }
 exports.getCCRequirementList=async(req,res)=>{
 
-  await requirements.findAll({where:{mainId:req.mainId,recruiterId:req.recruiterId},attributes:['id','requirementName','uniqueId']}).then(data=>{
+  await requirements.findAll({where:{mainId:req.mainId,[Op.or]:{recruiterId:req.recruiterId,'$client.handlerId':req.recruiterId}},attributes:['id','requirementName','uniqueId'],include:[{model:client}]}).then(data=>{
     res.status(200).json({ status: true, data: data });
   }).catch(e=>{
     console.log(e);
