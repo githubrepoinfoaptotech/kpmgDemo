@@ -505,7 +505,7 @@ exports.changeRequirementStatus=async (req,res)=>{
       }
       else
       {
-        res.status(500).json({status:true,message:"Project Is Inactive"});
+        res.status(200).json({status:true,message:"Project Is Inactive"});
       }
     }
   }).catch(e=>{
