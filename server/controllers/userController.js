@@ -573,7 +573,7 @@ exports.addUser = async (req, res) => {
         capabilities:capabilities,
         recruiterCapacity:recruiterCapacity
       };
-      await recruiter.create();
+      await recruiter.create(rec_data);
       res
         .status(200)
         .json({ status: true, message: "User Added Successfully" });
