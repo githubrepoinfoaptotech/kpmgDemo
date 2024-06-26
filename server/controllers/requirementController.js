@@ -511,7 +511,7 @@ exports.changeRequirementStatus=async (req,res)=>{
   }).catch(e=>{
     console.log(e);
     res.status(500).json({ status: false, message: "Error" });
-  })
+  });
 };
 
 

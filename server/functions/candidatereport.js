@@ -91,11 +91,13 @@ exports.reportData=async(req,Code)=>{
                     }, {
                         model: client,
                         attributes: ["clientName", "id", "uniqueId"],
-                        include: [{ model: statusCode, attributes: ['statusName'] }],
+                        include: [{ model: statusCode, attributes: ['statusName'] },{ model: recruiter, as: 'recruiter', attributes: ['id', 'firstName', 'lastName'] },
+                        { model: recruiter, as: 'handler', attributes: ['id', 'firstName', 'lastName'] }],
                     }, {
                         model: recruiter,
                         attributes: ["id", "mainId", "firstName", "lastName"]
-                    }]
+                    }
+                ]
             },
             {
                 model: statusCode,
