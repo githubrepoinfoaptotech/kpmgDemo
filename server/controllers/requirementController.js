@@ -495,7 +495,7 @@ exports.changeRequirementStatus=async (req,res)=>{
       res.status(200).json({status:true,message:"Requirement Is Now Inactive"});
     } 
     else{ 
-      if(data.statusCode.client==101)
+      if(data.client.statusCode==101)
       {  
       await data.update({
         statusCode:201,
