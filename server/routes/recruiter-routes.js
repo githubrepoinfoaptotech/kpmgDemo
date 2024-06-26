@@ -29,7 +29,7 @@ route.post('/addCandidate',check_auth,validation.addCandidateValidation,message.
 route.post('/candidate',check_auth,candidateController.viewCandidate);
 route.post('/myCandidates',check_auth,candidateController.myCandidates);
 route.post('/userEdit',check_auth,userController.userEdit);
-route.post('/requirementList',check_auth,requirementController.requirementList);
+//route.post('/requirementList',check_auth,requirementController.requirementList);
 route.post('/candidateStatusCodeList',check_auth,candidateController.candidateStatusCodeList);
 route.post('/recuriterDashboard',check_auth,dashboardController.recuriterDashboard);
 route.post('/updateOfferDeclineStatus',check_auth,candidateController.updateOfferDeclineStatus);
