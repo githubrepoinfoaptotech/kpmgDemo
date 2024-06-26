@@ -86,7 +86,7 @@ exports.addRequirement = async (req, res) => {
       var rec;
       if(recList.length>0)
         {
-          for(i=0;i<=recList.length;i++)
+          for(i=0;i<recList.length;i++)
             {
               rec=recList[i];
               var isAssigned=await assignedRequirements.findOne({where:{recruiterId:rec,requirementId:data.id,mainId:req.mainId}});
