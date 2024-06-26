@@ -136,7 +136,7 @@ exports.textExtract = async function (req, res, next) {
                     }
                 if(candidate_mobile)
                     {
-                        req.body.candidate_email=candidate_mobile[0];
+                        req.body.candidate_mobile=candidate_mobile[0];
                     }
                 fs.unlinkSync(req.file.path);
                 res.status(200).json({data:req.body,status:true});
