@@ -46,6 +46,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import MatchJDDialog from "../../components/Candidates/MatchJDDialog.js";
 import { useResumeDataContext } from "../../context/CandidateDataContext.js";
 import CPVFormView from "../../components/Candidates/CPVFormView.js";
+import ReactPdfDialog from "../../components/Candidates/ReactPdfDialog.js";
 
 const positions = [toast.POSITION.TOP_RIGHT];
 
@@ -876,9 +877,7 @@ export default function Tables(props) {
     let url = ""
     if (decode.companyType === "COMPANY") {
       url = `${process.env.REACT_APP_SERVER}recruiter/myassignedRequirementsList`
-    } else {
-      url = `${process.env.REACT_APP_SERVER}recruiter/requirementList`
-    }
+    } 
     axios({
       method: "post",
       url: url,
@@ -1057,10 +1056,10 @@ export default function Tables(props) {
         handleClickOpen();
 
       }
-      // else{
-      //   handleNotificationCall("error", response.data.message);
+      else {
+        handleNotificationCall("error", response.data.message);
 
-      // }
+      }
     });
   }
 
@@ -1069,7 +1068,7 @@ export default function Tables(props) {
       if (!values.day || !values.month || !values.year) {
         handleNotificationCall("error", "Please select the date of birth properly.");
         return;
-        }
+      }
       setLoader(true);
 
       var dob = values.day + "-" + values.month + "-" + values.year;
@@ -2542,7 +2541,7 @@ export default function Tables(props) {
                 name: "Requirement Name",
               },
               {
-                name: decode.companyType === "COMPANY" ? "Hiring Manager" : "Client Coordinator",
+                name: "Hiring Manager",
               },
               {
                 name: "Recruiter Name",
@@ -2621,7 +2620,7 @@ export default function Tables(props) {
                     : "",
 
                 <> {item.requirement?.requirementName} <br />{"(" + item.requirement?.uniqueId + ")"}</>,
-                item.requirement?.recruiter?.firstName + " " + item.requirement?.recruiter?.lastName,
+                item.requirement?.client?.handler?.firstName + " " + item.requirement?.client?.handler?.lastName,
                 item.recruiter?.firstName + " " + item.recruiter?.lastName,
                 <>{item.candidateDetail?.resume !== `${process.env.REACT_APP_AZURE_BUCKET_URL}` ? (<>   <Grid container className={classes.space}>     <Grid item xs className={classes.toolAlign}>
                   <Tooltip title="View Resume" placement="bottom" aria-label="view"       >
@@ -2765,12 +2764,16 @@ export default function Tables(props) {
         cpvData={cpvData}
         handleCPVClose={handleCPVClose}
       />
-      <ResumeDialog
+      {/* <ResumeDialog
+        resume={file}
+        resumeOpen={resumeOpen}
+        handleResumeClose={handleResumeClose}
+      /> */}
+      <ReactPdfDialog
         resume={file}
         resumeOpen={resumeOpen}
         handleResumeClose={handleResumeClose}
       />
-
       {/* <MatchJDDialog
         resumePercentage={resumePercentage}
         requirementName={requirementName}

@@ -1944,9 +1944,7 @@ export default function Tables(props) {
                   {"(" + item.requirement?.uniqueId + ")"}
                 </>,
                 item.recruiter?.firstName + " " + item.recruiter?.lastName,
-                item.requirement?.recruiter?.firstName +
-                " " +
-                item.requirement?.recruiter?.lastName,
+                item.requirement?.client?.handler?.firstName + " " + item.requirement?.client?.handler?.lastName,
                 <Tooltip title="View Candidate" placement="bottom" aria-label="view">
                   <ViewIcon
                     className={classes.toolIcon}

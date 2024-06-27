@@ -223,7 +223,7 @@ export default function Tables() {
     formState: { errors: editErrors, isSubmitting: editIsSubmitting },
     handleSubmit: editSubmit,
     reset: editreset,
-    setValue: setEditValue, 
+    setValue: setEditValue,
     trigger: editTrigger,
   } = useForm({
     mode: "onBlur",
@@ -877,21 +877,20 @@ export default function Tables() {
     </>
   );
 
-  function handleStatus(id, value) {
-    setLoader(true);
-    axios({
-      method: "post",
-      url: `${process.env.REACT_APP_SERVER}cc/changeRequirementStatus`,
-      data: {
+  async function handleStatus(id, value) {
+
+    try {
+      setLoader(true);
+      const response = await axios.post(`${process.env.REACT_APP_SERVER}cc/changeRequirementStatus`, {
         requirementId: id,
-      },
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-    }).then(function (response) {
+      }, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        }
+      });
+      setLoader(false);
       if (response.data.status === true) {
-        setLoader(false);
         const switchState = requirementsData.map((item) => {
           if (item.id === id) {
             return {
@@ -906,8 +905,13 @@ export default function Tables() {
         });
         setRequirementsData(switchState);
         handleNotificationCall("success", response.data.message);
+      } else {
+        handleNotificationCall("error", response.data.message);
       }
-    });
+    } catch (error) {
+      setLoader(false);
+      console.log(error)
+    }
   }
 
   const list = (anchor) =>
@@ -941,7 +945,7 @@ export default function Tables() {
 
               <form onSubmit={editSubmit(handleEdit)}>
                 <CardContent>
-                  <Grid container direction="row" spacing={2} style={{height: "79vh",overflow: "scroll"}}>
+                  <Grid container direction="row" spacing={2} style={{ height: "79vh", overflow: "scroll" }}>
                     <Grid item xs={12} sm={6} md={6} lg={6}>
                       <FormControl className={classes.margin}>
                         <InputLabel shrink htmlFor="clientId">
@@ -1309,7 +1313,7 @@ export default function Tables() {
                           </div>
 
                           {requirementsEdit?.jd !==
-                           `${process.env.REACT_APP_AZURE_BUCKET_URL}` &&
+                            `${process.env.REACT_APP_AZURE_BUCKET_URL}` &&
                             requirementsEdit?.jd !== "" ? (
                             <>
                               <Tooltip
