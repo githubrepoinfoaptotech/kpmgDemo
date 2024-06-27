@@ -801,13 +801,13 @@ async function candidateHistory(req, candidateId, mobile, requirementId) {
         recruiterId: req.recruiterId,
       })
       .then(async () => {
-        Wallet = await recruiterWallet.findOne({
-          where: { mainId: req.mainId },
-        });
-        messagesLeft = Wallet.remainingMessages - 1;
-        await Wallet.update({
-          remainingMessages: messagesLeft,
-        });
+        // Wallet = await recruiterWallet.findOne({
+        //   where: { mainId: req.mainId },
+        // });
+        // messagesLeft = Wallet.remainingMessages - 1;
+        // await Wallet.update({
+        //   remainingMessages: messagesLeft,
+        // });
       });
   }
 };
