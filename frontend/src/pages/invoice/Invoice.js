@@ -922,7 +922,7 @@ className={classes.flexCenter}
 
                 item.requirement?.requirementName +  " (" + item.requirement?.uniqueId +  ")",
                 item.recruiter?.firstName + " " + item.recruiter?.lastName,
-                item.requirement?.recruiter?.firstName +  " " +  item.requirement?.recruiter?.lastName,
+                item.requirement?.client?.handler?.firstName + " " + item.requirement?.client?.handler?.lastName,
                 
                 moment(item.invoicedDate).format("DD-MM-YYYY"),
                 item.invoiceValue,

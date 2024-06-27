@@ -3,8 +3,6 @@ import MUIDataTable from "mui-datatables";
 import { Grid, Button, TextField, SwipeableDrawer, TablePagination, Backdrop, CircularProgress } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { toast } from "react-toastify";
-import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
-import Tooltip from "@material-ui/core/Tooltip";
 import moment from "moment";
 import axios from "axios";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -1883,7 +1881,7 @@ const Layout = (props) => {
                     : "",
                 <> {item.requirement?.requirementName} <br /> {"(" + item.requirement?.uniqueId + ")"}</>,
                 item.recruiter?.firstName + " " + item.recruiter?.lastName,
-                item.requirement?.recruiter?.firstName + " " + item.requirement?.recruiter?.lastName,
+                item.requirement?.client?.handler?.firstName + " " + item.requirement?.client?.handler?.lastName,
                 moment(item.createdAt).format("DD-MM-YYYY"),
 
               ];

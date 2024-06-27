@@ -75,7 +75,8 @@ export default function Add(props) {
     setProfileFileName(event.target.name);
     props.setProfile(event.target.files[0]);
   }
-  const dob = props.candidate?.dob != null || undefined ? props.candidate?.dob?.split("-") : ["00", "00", "00"];
+  const dob = props.candidate?.dob != null || undefined ? props.candidate?.dob?.split("-") : ["DD", "MM", "YYYY"];
+  console.log(dob)
   const days = dob[0];
   const months = dob[1];
   const years = dob[2];
@@ -714,15 +715,19 @@ export default function Add(props) {
                     <InputLabel shrink htmlFor="dob">
                       DOB
                     </InputLabel>
-                    <FormControl
-                      className={classes.margin + " " + classes.dateSelect}
-                    >
+                    <FormControl className={classes.margin + " " + classes.dateSelect}>
                       <select
                         defaultValue={days}
-                        onChange={(e) => {
-                          props.setDay(e.target.value);
-                        }}
-                        {...props.register("day")}
+                        value={days}
+                        {...props.register("day", {
+                          onChange: (e) => {
+                            props.setDay(e.target.value);
+                            props.setCandidate({
+                              ...props.candidate,
+                              dob: `${e.target.value}-${months}-${years}`,
+                            });
+                          },
+                        })}
                         className={classes.selectDrop}
                         required
                       >
@@ -736,10 +741,16 @@ export default function Add(props) {
 
                       <select
                         defaultValue={months}
-                        onChange={(e) => {
-                          props.setMonth(e.target.value);
-                        }}
-                        {...props.register("month")}
+                        value={months}
+                        {...props.register("month", {
+                          onChange: (e) => {
+                            props.setMonth(e.target.value);
+                            props.setCandidate({
+                              ...props.candidate,
+                              dob: `${days}-${e.target.value}-${years}`,
+                            });
+                          },
+                        })}
                         className={classes.selectDrop}
                         required
                       >
@@ -753,10 +764,17 @@ export default function Add(props) {
 
                       <select
                         defaultValue={years}
-                        onChange={(e) => {
-                          props.setYear(e.target.value);
-                        }}
-                        {...props.register("year")}
+                        value={years}
+                        {...props.register("year", {
+                          onChange: (e) => {
+                            props.setYear(e.target.value);
+                            props.setCandidate({
+                              ...props.candidate,
+                              dob: `${days}-${months}-${e.target.value}`,
+                            });
+                          },
+                        })}
+
                         className={classes.selectDrop}
                         required
                       >

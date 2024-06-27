@@ -1105,9 +1105,7 @@ export default function Tables(props) {
                   {"(" + item.requirement?.uniqueId + ")"}
                 </>,
                 item.recruiter?.firstName + " " + item.recruiter?.lastName,
-                item.requirement?.recruiter?.firstName +
-                " " +
-                item.requirement?.recruiter?.lastName,
+                item.requirement?.client?.handler?.firstName + " " + item.requirement?.client?.handler?.lastName,
 
                 moment(item.createdAt).format("DD-MM-YYYY"),
               ];
