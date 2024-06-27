@@ -49,6 +49,7 @@ import ExpandButton from "../../components/Candidates/ExpandButton";
 import useStyles from "../../themes/style.js";
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import "react-toastify/dist/ReactToastify.css";
+import ReactPdfDialog from "../../components/Candidates/ReactPdfDialog.js";
 
 const positions = [toast.POSITION.TOP_RIGHT];
 
@@ -2495,7 +2496,7 @@ export default function Candidates(props) {
                       <>  {item.candidateDetail?.email + " /"} <br />{"91 " + item.candidateDetail?.mobile.slice(2)}  </>
                       : ""} </>,
                 <>{item.requirement?.requirementName} <br /> {" (" + item.requirement?.uniqueId + ")"} </>,
-                item.requirement?.recruiter?.firstName + " " + item.requirement?.recruiter?.lastName,
+                item.requirement?.client?.handler?.firstName + " " + item.requirement?.client?.handler?.lastName,
                 item.recruiter?.firstName + " " + item.recruiter?.lastName,
                 <>{item.candidateDetail?.resume !== `${process.env.REACT_APP_AZURE_BUCKET_URL}` ? (<>   <Grid container className={classes.space}>     <Grid item xs className={classes.toolAlign}>
                   <Tooltip title="View Resume" placement="bottom" aria-label="view"       >
@@ -2591,7 +2592,7 @@ export default function Candidates(props) {
       />
 
 
-      <ResumeDialog
+      <ReactPdfDialog
         resume={file}
         resumeOpen={resumeOpen}
         handleResumeClose={handleResumeClose}

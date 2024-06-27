@@ -870,15 +870,12 @@ export default function Tables(props) {
     }).then(function (response) {
 
       if (response.data.status === true) {
-
-
         handleAddList(false, values);
+      }
+      else{
+        handleNotificationCall("error", response.data.message);
 
       }
-      // else{
-      //   handleNotificationCall("error", response.data.message);
-
-      // }
       setLoader(false);
     });
   }
@@ -1920,7 +1917,7 @@ export default function Tables(props) {
                     : "",
                 <> {item.requirement?.requirementName} <br />{"(" + item.requirement?.uniqueId + ")"}</>,
                 item.recruiter?.firstName + " " + item.recruiter?.lastName,
-                item.requirement?.recruiter?.firstName + " " + item.requirement?.recruiter?.lastName,
+                item.requirement?.client?.handler?.firstName + " " + item.requirement?.client?.handler?.lastName,
 
                 <>{item.candidateDetail?.resume !== `${process.env.REACT_APP_AZURE_BUCKET_URL}` ? (<>   <Grid container className={classes.space}>     <Grid item xs className={classes.toolAlign}>
                   <Tooltip title="View Resume" placement="bottom" aria-label="view"       >

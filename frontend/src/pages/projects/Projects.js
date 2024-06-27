@@ -2384,7 +2384,7 @@ export default function Tables() {
                   {item.clientName} {"(" + item.uniqueId + ")"}
                 </div>,
                 <div style={{ display: "flex", alignItems: 'center', gap: "5px" }}>
-                  {item.approved === "Approved" ? <> <CheckCircleIcon style={{ color: "#9BCF53" }} /> <span> Approved </span> </> : item.approved === "Disapproved" ? <> <HighlightOffIcon style={{ color: "#FF0000" }} /> <span>Not Approved </span> </> : item.approved === "Pending" ? <> <ScheduleIcon style={{ color: "#1679AB" }} /><span> Pending </span> </> : <></>}
+                  {item.approved === "Approved" ? <> <CheckCircleIcon style={{ color: "#9BCF53" }} /> <span> Approved </span> </> : item.approved === "Disapproved" ? <> <HighlightOffIcon style={{ color: "#FF0000" }} /> <span>Not Approved </span> </> : item.approved === "Pending" ? <> <ScheduleIcon style={{ color: "#1679AB" }} /><span> Pending </span> </> : <>Not Initiated</>}
                 </div>,
                 item.clientIndustry,
                 item.aggStartDate

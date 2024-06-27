@@ -63,6 +63,8 @@ const ReactPdfDialog = (props) => {
     return textContent.items;
   };
 
+  console.log(isFileType)
+
   return (
     <>
       <Dialog

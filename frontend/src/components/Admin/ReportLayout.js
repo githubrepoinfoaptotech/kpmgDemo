@@ -767,7 +767,7 @@ export default function Layout(props) {
         <>
           {item.candidate.requirement?.requirementName} <br />   {" (" + item.candidate.requirement?.uniqueId + ")"}</>,
         item.candidate.recruiter?.firstName + " " + item.candidate.recruiter?.lastName,
-        item.candidate.requirement?.recruiter?.firstName + " " + item.candidate.requirement?.recruiter?.lastName,
+        item.candidate.requirement?.client?.handler?.firstName + " " + item.candidate.requirement?.client?.handler?.lastName,
 
 
         moment(item.createdAt).format("DD-MM-YYYY"),

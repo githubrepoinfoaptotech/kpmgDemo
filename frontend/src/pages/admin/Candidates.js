@@ -1325,10 +1325,10 @@ export default function Candidates(props) {
       if (response.data.status === true) {
         handleClickOpen();
       }
-      // else{
-      //   handleNotificationCall("error", response.data.message);
+      else{
+        handleNotificationCall("error", response.data.message);
 
-      // }
+      }
     });
   }
 

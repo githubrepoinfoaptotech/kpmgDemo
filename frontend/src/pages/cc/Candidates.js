@@ -256,7 +256,6 @@ export default function Tables(props) {
   };
 
   const [dataList, setDataList] = useState("ADD");
-  const [requirement, setRequirement] = useState([]);
   const [requirementList, setRequirementList] = useState({
     cand1_name: "",
     job1_location: "",
@@ -667,7 +666,7 @@ export default function Tables(props) {
             currentCompanyName: response.data.data?.currentCompanyName,
             freeValue: decode.isEnableFree === true ? "YES" : decode.isEnablePaid === true ? "NO" : "YES",
             panNumber: response.data.data?.panNumber,
-              linkedInProfile: response.data.data?.linkedInProfile,
+            linkedInProfile: response.data.data?.linkedInProfile,
           });
         }
       });
@@ -929,23 +928,23 @@ export default function Tables(props) {
       });
   }
 
-  useEffect(() => {
-    axios({
-      method: "post",
-      url: `${process.env.REACT_APP_SERVER}recruiter/requirementList`,
-      data: {
-        page: "1",
-      },
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-    }).then(function (response) {
-      if (response.data.status === true) {
-        setRequirement(response.data.data);
-      }
-    });
-  }, [token]);
+  // useEffect(() => {
+  //   axios({
+  //     method: "post",
+  //     url: `${process.env.REACT_APP_SERVER}recruiter/requirementList`,
+  //     data: {
+  //       page: "1",
+  //     },
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: token,
+  //     },
+  //   }).then(function (response) {
+  //     if (response.data.status === true) {
+  //       setRequirement(response.data.data);
+  //     }
+  //   });
+  // }, [token]);
 
   useEffect(() => {
     axios({
@@ -1180,10 +1179,10 @@ export default function Tables(props) {
         handleClickOpen();
 
       }
-      // else{
-      //   handleNotificationCall("error", response.data.message);
+      else {
+        handleNotificationCall("error", response.data.message);
 
-      // }
+      }
     });
   }
 
@@ -2347,7 +2346,7 @@ export default function Tables(props) {
           requirementList={requirementList}
           handleSubmit={handleSubmit}
           handleAdd={handleAdd}
-          requirement={requirement}
+          requirement={requirementName}
           setValue={setValue}
           isSubmitting={isSubmitting}
           open={open}
@@ -2608,7 +2607,7 @@ export default function Tables(props) {
                 name: "Requirement Name",
               },
               {
-                name: decode.companyType === "COMPANY" ? "Hiring Manager" : "Client Coordinator",
+                name: "Hiring Manager",
               },
               {
                 name: "Recruiter Name",
@@ -2687,9 +2686,8 @@ export default function Tables(props) {
                     <>  {item.candidateDetail?.email + " /"} <br />{"91 " + item.candidateDetail?.mobile.slice(2)}  </>
                     : "",
                 <> {item.requirement?.requirementName}  <br /> {"(" + item.requirement?.uniqueId + ")"} </>,
-                item.recruiter?.firstName + " " + item.recruiter?.lastName,
-                item.requirement?.recruiter?.firstName + " " + item.requirement?.recruiter?.lastName,
-
+                item.requirement?.client?.handler?.firstName + " " + item.requirement?.client?.handler?.lastName,
+                item.requirement?.recruiter?.firstName + " " + item?.requirement?.recruiter?.lastName,
                 <>{item.candidateDetail?.resume !== `${process.env.REACT_APP_AZURE_BUCKET_URL}` ? (<>   <Grid container className={classes.space}>     <Grid item xs className={classes.toolAlign}>
                   <Tooltip title="View Resume" placement="bottom" aria-label="view"       >
                     <DescriptionIcon className={classes.toolIcon} onClick={() => {
@@ -2700,9 +2698,6 @@ export default function Tables(props) {
                       ])
                     }} />
                   </Tooltip>
-                  {/* <Tooltip         title="Downlaod Resume"         placement="bottom"         aria-label="downlaod"       > 
-  <a href={item.candidateDetail?.resume} download>  <GetAppIcon className={classes.toolIcon} />    </a>      
-</Tooltip>      */}
                 </Grid>   </Grid> </>) : ("No Resume Found")}</>,
 
                 <Tooltip title="View Candidate" placement="bottom" aria-label="view"       >
