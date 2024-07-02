@@ -37,6 +37,7 @@ const aiRoutes=require('./routes/ai-connection-routes');
 const xlsx = require('xlsx');
 // -----------------------------------
 const app = express();
+const Pricing = require("./models/pricing");
 // ----------------------------
 var corsOptions = {
   origin: "*",
@@ -82,7 +83,7 @@ app.post("/addrole", async(req, res) => {
       console.log(data);
   for(i=0;i<data.length;i++)
     {
-      await hiringSupport.create(data[i]);
+      await Pricing.create(data[i]);
     }
     res.send("done");
 });
@@ -837,6 +838,7 @@ server.listen(process.env.PORT || 4000, () =>
 );*/
 
 const https = require("https");
+
 
   
 //  const options = {
