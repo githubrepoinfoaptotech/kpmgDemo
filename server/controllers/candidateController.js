@@ -3231,39 +3231,35 @@ async function candidateHistory(req, candidateId, mobile, requirementId) {
 
 exports.uploadExistingCandidates=async(req,res)=>{
   try{
-  const workbook = XLSX.readFile(req.file.path);
-  const sheetName = workbook.SheetNames[0];
-  const worksheet = workbook.Sheets[sheetName];
-  const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-  const transformedData = jsonData.slice(1).map(row => {
-    if(row.length!=0)
-      {
-      
-      return {
-      firstName: row[1].split(" ")[0],
-      lastName: row[1].split(" ")[1],
-      email: row[2],
-      mobile: row[3],
-      skills:row[4],
-      dob:row[5]
-    };
+    const workbook = XLSX.readFile(req.file.path);
+    const sheetName = workbook.SheetNames[0];
+    const worksheet = workbook.Sheets[sheetName];
+    const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+    const transformedData = jsonData.slice(1).map(row => {
+      if(row.length!=0)
+        {
+        return {
+        firstName: row[1].split(" ")[0],
+        lastName: row[1].split(" ")[1],
+        email: row[2],
+        mobile: row[3],
+        skills:row[4],
+        dob:row[5]
+      };
+      }
+    });
+    for(i=0;i<transformedData.length;i++){
+      currentData=transformedData[i];
+      var isExist=await existingCandidate.findOne({where:{mainId:req.mainId,[Op.or]:{mobile:currentData.mobile,email:currentData.email}}});
+      if(!isExist){
+        await existingCandidate.create({mobile:currentData.mobile,email:currentData.email,name:currentData.name,mainId:req.mainId,
+          createdBy:req.recruiterId});
+       
+      }
     }
-  });
-  //console.log(transformedData);
-  for(i=0;i<transformedData.length;i++){
-    if(transformedData[i])
-    {
-    currentData=transformedData[i];
-    var isExist=await candidateDetails.findOne({where:{mainId:req.mainId,[Op.or]:{mobile:currentData.mobile,email:currentData.email}}});
-    if(!isExist){
-      await candidateDetails.create({mobile:currentData.mobile,email:currentData.email,lastName:currentData.lastName,firstname:currentData.firstname,mainId:req.mainId,
-        createdBy:req.recruiterId,skills:currentData.skills,dob:currentData.dob});
+    deleteFolder(req.mainId);
+    res.status(200).json({status:true});
     }
-  }
-  }
-  deleteFolder(req.mainId);
-  res.status(200).json({status:true});
-  }
   catch(e){
     console.log(e);
     res.status(500).json({ message: "Error", status: false });
