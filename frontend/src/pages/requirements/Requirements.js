@@ -1313,7 +1313,7 @@ export default function Tables() {
                           </div>
 
                           {requirementsEdit?.jd !==
-                            `${process.env.REACT_APP_AZURE_BUCKET_URL}` &&
+                            `${process.env.REACT_APP_AWS_BUCKET_URL}` &&
                             requirementsEdit?.jd !== "" ? (
                             <>
                               <Tooltip
@@ -1616,7 +1616,7 @@ export default function Tables() {
                       className={classes.space + " " + classes.alignItemsEnd}
                     >
                       {requirementsView?.jd !==
-                        `${process.env.REACT_APP_AZURE_BUCKET_URL}` ? (
+                        `${process.env.REACT_APP_AWS_BUCKET_URL}` ? (
                         <>
                           <Tooltip
                             title="View JD"

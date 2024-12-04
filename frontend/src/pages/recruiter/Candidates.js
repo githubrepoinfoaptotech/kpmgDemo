@@ -2622,7 +2622,7 @@ export default function Tables(props) {
                 <> {item.requirement?.requirementName} <br />{"(" + item.requirement?.uniqueId + ")"}</>,
                 item.requirement?.client?.handler?.firstName + " " + item.requirement?.client?.handler?.lastName,
                 item.recruiter?.firstName + " " + item.recruiter?.lastName,
-                <>{item.candidateDetail?.resume !== `${process.env.REACT_APP_AZURE_BUCKET_URL}` ? (<>   <Grid container className={classes.space}>     <Grid item xs className={classes.toolAlign}>
+                <>{item.candidateDetail?.resume !== `${process.env.REACT_APP_AWS_BUCKET_URL}` ? (<>   <Grid container className={classes.space}>     <Grid item xs className={classes.toolAlign}>
                   <Tooltip title="View Resume" placement="bottom" aria-label="view"       >
                     <DescriptionIcon className={classes.toolIcon} onClick={() => {
                       handleResumeOpen(); setFile([

@@ -787,7 +787,7 @@ export default function View(props) {
               <Slider {...settings}>
                 {props.candidateView?.resume !== null &&
                   props.candidateView?.resume !==
-                  `${process.env.REACT_APP_AZURE_BUCKET_URL}` ? (
+                  `${process.env.REACT_APP_AWS_BUCKET_URL}` ? (
                   <div>
                     <div className={classes.center}>
                       <Typography
@@ -1226,7 +1226,7 @@ export default function View(props) {
 
                 {props.candidateView?.candidateMindsetAssessmentLink !== null &&
                   props.candidateView?.candidateMindsetAssessmentLink !==
-                  `${process.env.REACT_APP_AZURE_BUCKET_URL}` ? (
+                  `${process.env.REACT_APP_AWS_BUCKET_URL}` ? (
                   <div>
                     <div className={classes.center}>
                       <Typography

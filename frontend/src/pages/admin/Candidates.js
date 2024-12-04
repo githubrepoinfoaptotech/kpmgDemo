@@ -3118,7 +3118,7 @@ export default function Candidates(props) {
                 item.requirement?.recruiter?.firstName + " " + item?.requirement?.recruiter?.lastName,
                 <>
                   {item.candidateDetail?.resume !==
-                    `${process.env.REACT_APP_AZURE_BUCKET_URL}` ? (
+                    `${process.env.REACT_APP_AWS_BUCKET_URL}` ? (
                     <>
                       <Grid container className={classes.space}>
                         <Grid item xs className={classes.toolAlign}>

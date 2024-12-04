@@ -104,7 +104,6 @@ function Login(props) {
     if (notificationType === "error") setErrorToastId(toastId);
   }
 
-
   const validationSchema = Yup.object().shape({
     email: Yup.string().required('Email is required').email('Email must be a Valid Email Address'),
     password: Yup.string()
