@@ -352,7 +352,7 @@ export default function Tables() {
                 <div className={classes.space + " " + classes.alignItemsEnd}  >
 
 
-                  {requirementsView?.jd !== `${process.env.REACT_APP_AZURE_BUCKET_URL}` ? <>
+                  {requirementsView?.jd !== `${process.env.REACT_APP_AWS_BUCKET_URL}` ? <>
                     <Tooltip
                       title="View JD"
                       placement="bottom"

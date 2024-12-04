@@ -445,7 +445,6 @@ export default function Header(props) {
       if (response.data.status === true) {
         setLoader(false);
         handleNotificationCall("success", response.data.message);
-        setImage(response.data.image);
       } else {
         setLoader(false);
         handleNotificationCall("error", response.data.message);
